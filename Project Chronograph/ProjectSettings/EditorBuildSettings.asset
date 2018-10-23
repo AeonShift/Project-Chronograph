@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Intro/MainMenu.unity
+    guid: 13cca5f1598355f44a0a8567542db3fb
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_1.unity
+    guid: a3d22b0c027926846a33c666b25346af
+  - enabled: 0
+    path: 
+    guid: 98e55d88bf4903e44ac4575ac0cd251e
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_2.unity
+    guid: f9d0bdc5ed5151b409321e9142bbd6a4
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_3.unity
+    guid: a5f8a6a2d55fd5247863b1703e45720f
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_3.unity
+    guid: a5f8a6a2d55fd5247863b1703e45720f
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_4.unity
+    guid: 89dfda1f731ea1245965e039e9d2a5dd
+  - enabled: 1
+    path: Assets/Scenes/Intro/Intro_1.unity
+    guid: a3d22b0c027926846a33c666b25346af
+  - enabled: 0
+    path: Assets/__DELETED_GUID_Trash/e6355bd8dfb320c46bd5f967fbbe3e47
+    guid: e6355bd8dfb320c46bd5f967fbbe3e47
+  - enabled: 1
+    path: Assets/Scenes/Hourglass/HG_1.unity
+    guid: b6099513cff88f44aba5e672e0ef3ce4
+  - enabled: 1
+    path: Assets/Scenes/Hourglass/HG_2.unity
+    guid: 539d2a5b1acc9874d9e9365b5357e2c4
+  - enabled: 1
+    path: Assets/Scenes/Flavor/F_1.unity
+    guid: 9a1f9f4096004b549992a5e181e2f46e
+  - enabled: 1
+    path: Assets/Scenes/Flavor/F_2.unity
+    guid: e7b8df8a0fac09d42b39d57b1a40d57b
+  - enabled: 1
+    path: Assets/Scenes/Flavor/F_3.unity
+    guid: bc24c5f51cc8faa48af7ccd028a3b314
+  - enabled: 1
+    path: Assets/Scenes/Hourglass/HG_3.unity
+    guid: 47bfa94260de6de4997041e5b2474b46
+  - enabled: 1
+    path: Assets/Scenes/Hub/Hub_2.unity
+    guid: d2adac6df0485844faad83edfff8fe83
+  - enabled: 1
+    path: Assets/Scenes/Hub/Hub.unity
+    guid: 63f253fa4c278fb458ca095be61099e2
+  - enabled: 1
+    path: Assets/Scenes/Gauntlet/A-Side.unity
+    guid: 326b1d94b326890428c60c65fd0adfb4
+  - enabled: 1
+    path: Assets/Scenes/Gauntlet/A-Side.unity
+    guid: 326b1d94b326890428c60c65fd0adfb4
+  m_configObjects: {}

@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{F345D1F8-88C6-F86E-4A1A-45BCB3A4C5EE}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/TimeManager.cs">
+    <Files>
+      <File FileName="Assets/Scripts/PlatformMovement.cs" Line="27" Column="81" />
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="82" Column="37" />
+      <File FileName="Assets/Scripts/TimeManager.cs" Line="15" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
