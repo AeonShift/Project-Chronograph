@@ -1,21 +1,11 @@
 ﻿<Properties StartupConfiguration="{20E910C5-19E6-4A85-09EC-F1DADD468B4A}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/AttackTrigger.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Time Scripts/TimeManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/RaycastPlayerController.cs" Line="22" Column="95" />
-      <File FileName="Assets/Scripts/RaycastMoveDirection.cs" Line="39" Column="1" />
-      <File FileName="Assets/Scripts/PlayerController.cs" Line="62" Column="40" />
-      <File FileName="Assets/Scripts/PlayerAttack.cs" Line="17" Column="29" />
-      <File FileName="Assets/Scripts/TimeManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlatformMovement.cs" Line="44" Column="1" />
-      <File FileName="Assets/Scripts/ZoneController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/HealthManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/EnemyGroundMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MainMenu.cs" Line="10" Column="1" />
-      <File FileName="Assets/Scripts/PauseMenu.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Hourglass.cs" Line="29" Column="9" />
-      <File FileName="Assets/Scripts/FollowMovement.cs" Line="25" Column="76" />
-      <File FileName="Assets/Scripts/AttackTrigger.cs" Line="12" Column="21" />
+      <File FileName="Assets/Scripts/Enemy Scripts/EnemyGroundMovement.cs" Line="34" Column="51" />
+      <File FileName="Assets/Scripts/Player Scripts/PlayerController.cs" Line="168" Column="34" />
+      <File FileName="Assets/Scripts/Player Scripts/RaycastPlayerController.cs" Line="29" Column="39" />
+      <File FileName="Assets/Scripts/Time Scripts/TimeManager.cs" Line="14" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
