@@ -2709,6 +2709,8 @@ MonoBehaviour:
   jumpStartSpeed: 10
   jumpMaxHoldPeriod: 0.2
   jumpMinSpeed: 2
+  playerAttack: {fileID: 1819066654}
+  timeManager: {fileID: 1764392799}
 --- !u!61 &1819066657
 BoxCollider2D:
   m_ObjectHideFlags: 0

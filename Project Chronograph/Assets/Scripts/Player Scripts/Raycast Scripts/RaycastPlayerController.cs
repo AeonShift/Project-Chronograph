@@ -67,6 +67,14 @@ public class RaycastPlayerController : MonoBehaviour {
 
     //for animations
     private bool facingRight = true;
+    public PlayerAttack playerAttack;
+
+
+    public TimeManager timeManager;
+
+    //so you can't spam powers
+    private int presses = 0;
+
 
 
 
@@ -121,6 +129,92 @@ public class RaycastPlayerController : MonoBehaviour {
             jumpStartTimer = jumpInputLeewayPeriod;
         }
         jumpInputDown = jumpBtn;
+
+        if (Input.GetButtonDown("SlowButton") && presses == 0)
+        {
+            presses += 1;
+            StartCoroutine(Slow());
+        }
+
+        if (Input.GetButtonDown("SpeedButton") && presses == 0)
+        {
+
+            presses += 1;
+            StartCoroutine(Speed());
+        }
+
+        if (Input.GetButtonDown("FreezeButton") && presses == 0)
+        {
+
+            presses += 1;
+            StartCoroutine(Freeze());
+
+        }
+    }
+
+
+    //Time stuff
+    IEnumerator Slow()
+    {
+
+        float timePassed = 0;
+
+        while (timePassed < 3)
+        {
+
+            timeManager.Slowdown();
+            timePassed += Time.deltaTime;
+
+            yield return null;
+
+
+        }
+        timeManager.UndoTime();
+        presses = 0;
+
+
+    }
+
+    IEnumerator Speed()
+    {
+
+        float timePassed = 0;
+
+        while (timePassed < 3)
+        {
+
+            timeManager.Speedup();
+            timePassed += Time.deltaTime;
+
+            yield return null;
+
+
+        }
+        timeManager.UndoTime();
+        presses = 0;
+
+
+    }
+
+    IEnumerator Freeze()
+    {
+
+        float timePassed = 0;
+
+        while (timePassed < 3)
+        {
+
+            timeManager.Freeze();
+            timePassed += Time.deltaTime;
+
+            yield return null;
+
+
+        }
+        timeManager.UndoTime();
+        presses = 0;
+
+
     }
 
     private void FixedUpdate()
