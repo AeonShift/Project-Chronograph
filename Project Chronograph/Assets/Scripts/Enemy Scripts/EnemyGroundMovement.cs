@@ -12,6 +12,7 @@ public class EnemyGroundMovement : MonoBehaviour {
     private bool hittingWall;
     public TimeManager timeManager;
     private SpriteRenderer spriteRenderer;
+    int freezetime = 500;
 
     // Use this for initialization
     void Start () {
@@ -43,4 +44,6 @@ public class EnemyGroundMovement : MonoBehaviour {
         }
         
     }
+
+
 }
