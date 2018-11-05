@@ -2499,12 +2499,11 @@ GameObject:
   - component: {fileID: 1819066656}
   - component: {fileID: 1819066646}
   - component: {fileID: 1819066654}
-  - component: {fileID: 1819066655}
-  - component: {fileID: 1819066649}
   - component: {fileID: 1819066653}
   - component: {fileID: 1819066652}
   - component: {fileID: 1819066651}
   - component: {fileID: 1819066650}
+  - component: {fileID: 1819066657}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -2593,27 +2592,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1819066649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1819066645}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 585f72ffba7474a05b8218bf432ce49c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 8
-  jumpforce: 23
-  animator: {fileID: 1819066653}
-  groundCheck: {fileID: 532836999}
-  checkRadius: 0.2
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 256
-  timeManager: {fileID: 1764392799}
-  playerAttack: {fileID: 0}
 --- !u!58 &1819066650
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2705,23 +2683,6 @@ MonoBehaviour:
   Damage: 1
   animator: {fileID: 1819066653}
   attacking: 0
---- !u!114 &1819066655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1819066645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21f078b2daf5b43cf87cdeba95066f6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  platformMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  gravity: 0
-  parallelInsetLen: 0
-  perpendicularInsetLen: 0
 --- !u!114 &1819066656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2736,9 +2697,43 @@ MonoBehaviour:
   platformMask:
     serializedVersion: 2
     m_Bits: 256
-  gravity: 9.8
-  parallelInsetLen: 0
-  perpendicularInsetLen: 0
+  gravity: 32
+  horizAccel: 20
+  horizDeccel: 40
+  horizMaxSpeed: 7
+  horizSnapSpeed: 3
+  parallelInsetLen: 0.5
+  perpendicularInsetLen: 0.05
+  groundTestLength: 0.05
+  jumpInputLeewayPeriod: 0.25
+  jumpStartSpeed: 10
+  jumpMaxHoldPeriod: 0.2
+  jumpMinSpeed: 2
+--- !u!61 &1819066657
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1819066645}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.8985597}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7.2, y: 5.4}
+    newSize: {x: 0.33, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.7, y: 3.6028802}
+  m_EdgeRadius: 0
 --- !u!1 &1867180738
 GameObject:
   m_ObjectHideFlags: 0

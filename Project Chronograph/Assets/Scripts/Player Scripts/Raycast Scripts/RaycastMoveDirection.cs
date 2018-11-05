@@ -11,9 +11,7 @@ public class RaycastMoveDirection {
     private float addLength;
 
 
-    /*parallel inset and perpendicular offset also help with positioning the starting points of our raycasts.
-    in this case, they are zero because our player doesn't seem to need it. They're pretty much there in case
-    we need them in the future*/
+    //parallel inset and perpendicular offset also help with positioning the starting points of our raycasts.
     public RaycastMoveDirection(Vector2 start, Vector2 end, Vector2 dir, LayerMask mask, Vector2 parallelInset, Vector2 perpendicularInset)
     {
         this.raycastDirection = dir;
@@ -26,7 +24,7 @@ public class RaycastMoveDirection {
     }
 
   
-    // you're at 48:49 in the video
+
     public float DoRaycast(Vector2 origin, float distance) {
         float minDistance = distance;
         foreach(var offset in offsetPoints){
