@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//You're at 1:29:07 in the video-
+//Go to 1:41:37
 public class RaycastPlayerController : MonoBehaviour {
 
     //this enumerator stors the two states of jumping
