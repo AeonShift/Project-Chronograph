@@ -36,9 +36,10 @@ public class TimeManager : MonoBehaviour {
 
         scalingFactor = 1f;
 
-
-
-
+    }
+    public void zoneEffect(float zoneSpeed)
+    {
+        scalingFactor = zoneSpeed;
     }
 
 
