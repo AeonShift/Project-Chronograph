@@ -20,7 +20,8 @@ public class FollowMovement : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 
         playerInRange = Physics2D.OverlapCircle(transform.position, playerRange, playerLayer);
 
@@ -43,4 +44,5 @@ public class FollowMovement : MonoBehaviour {
             spriteRenderer.flipX = true;
         }
     }
+
 }
