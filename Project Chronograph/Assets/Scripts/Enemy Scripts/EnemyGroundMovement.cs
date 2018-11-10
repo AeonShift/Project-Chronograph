@@ -34,11 +34,11 @@ public class EnemyGroundMovement : MonoBehaviour
 
         if (moveRight)
         {
-<<<<<<< HEAD
+//<<<<<<< HEAD
             transform.localScale = new Vector3(-1f, 1f, 1f);
-=======
-            transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f) ;
->>>>>>> Programming
+//=======
+ //           transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f) ;
+//>>>>>>> Programming
             GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed * timeManager.scalingFactor, GetComponent<Rigidbody2D>().velocity.y);
             spriteRenderer.flipX = true;
         }
