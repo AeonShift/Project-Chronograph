@@ -1,9 +1,18 @@
 ﻿<Properties StartupConfiguration="{20E910C5-19E6-4A85-09EC-F1DADD468B4A}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player Scripts/RaycastMoveDirection.cs">
     <Files>
       <File FileName="Assets/Scripts/Player Scripts/RaycastPlayerController.cs" Line="24" Column="59" />
       <File FileName="Assets/Scripts/Player Scripts/RaycastMoveDirection.cs" Line="14" Column="19" />
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Time Scripts/TimeManager.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Enemy Scripts/EnemyGroundMovement.cs" Line="34" Column="51" />
+      <File FileName="Assets/Scripts/Player Scripts/PlayerController.cs" Line="168" Column="34" />
+      <File FileName="Assets/Scripts/Player Scripts/RaycastPlayerController.cs" Line="29" Column="39" />
+      <File FileName="Assets/Scripts/Time Scripts/TimeManager.cs" Line="14" Column="18" />
+>>>>>>> Programming
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
