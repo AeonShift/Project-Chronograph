@@ -9,6 +9,8 @@ public class HealthManager : MonoBehaviour {
 
     public static int playerHealth;
 
+    public static bool invincible = false;
+
     Text text;
 
     private LevelManager levelManager;
@@ -39,6 +41,8 @@ public class HealthManager : MonoBehaviour {
         playerHealth -= damage;
     }
 
+
+   
 
     public void FullHp()
     {
