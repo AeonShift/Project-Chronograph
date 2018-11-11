@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Go to 1:41:37
+//Go to 1:41:37 when you want to add sound effects
+//you're currently at 2:05:39 in the video
 public class RaycastPlayerController : MonoBehaviour {
 
     //this enumerator stors the two states of jumping
     private enum JumpState{
         None = 0, Holding
     }
+
 
     //The SerializeFields are so that we can see the variables in the inspector even though they're private
     [SerializeField]
@@ -59,6 +61,10 @@ public class RaycastPlayerController : MonoBehaviour {
     //our groundcheck
     private RaycastCheckTouching groundDown;
 
+    //for moving with platforms
+    private Vector2 lastStandingOnPos;
+    private Collider2D lastStandingOn;
+
     //for jumping
     private float jumpStartTimer;
     private float jumpHoldTimer;
@@ -75,6 +81,12 @@ public class RaycastPlayerController : MonoBehaviour {
     //so you can't spam powers
     private int presses = 0;
 
+    //for Knockback
+    private Rigidbody2D rb2d;
+
+   
+
+
 
 
 
@@ -82,6 +94,7 @@ public class RaycastPlayerController : MonoBehaviour {
     void Start () {
 
         animator = GetComponent<Animator>();
+
         /*these weird numbers are setting the starting points for our vectors
         I couldn't (didn't try) get them to be nice numbers because it's based on the 
         current size of our character which is what we're basing everything off of, 
@@ -99,7 +112,7 @@ public class RaycastPlayerController : MonoBehaviour {
             platformMask, Vector2.up * parallelInsetLen, Vector2.left * perpendicularInsetLen);
 
         //might need another ground one for all directions for crouching and wall jumping
-        groundDown = new RaycastCheckTouching(new Vector2(-0.42809565f, -1.37f), new Vector2(0.42809565f, 1.37f), Vector2.down,
+        groundDown = new RaycastCheckTouching(new Vector2(-0.42809565f, -1.37f), new Vector2(0.42809565f, 0.75f), Vector2.down,
                    platformMask, Vector2.right * parallelInsetLen, Vector2.up * perpendicularInsetLen, groundTestLength);
     }
 
@@ -132,20 +145,21 @@ public class RaycastPlayerController : MonoBehaviour {
 
         if (Input.GetButtonDown("SlowButton") && presses == 0)
         {
+            timeManager.UndoTime();
             presses += 1;
             StartCoroutine(Slow());
         }
 
         if (Input.GetButtonDown("SpeedButton") && presses == 0)
-        {
-
+        {   
+            timeManager.UndoTime();
             presses += 1;
             StartCoroutine(Speed());
         }
 
         if (Input.GetButtonDown("FreezeButton") && presses == 0)
         {
-
+            timeManager.UndoTime();
             presses += 1;
             StartCoroutine(Freeze());
 
@@ -217,8 +231,31 @@ public class RaycastPlayerController : MonoBehaviour {
 
     }
 
+    //For knockback, you're at 7:15 in the video
+    public IEnumerator Knockback(float knockDur, float knockbackPwr, Vector3 knockbackDir)
+    {
+
+        float timer = 0;
+
+        while (knockDur > timer)
+        {
+
+            timer += Time.deltaTime;
+
+            //RB.bodyType = RigidbodyType2D.Dynamic;
+
+            rb2d.AddForce(new Vector3(knockbackDir.x * -100, knockbackDir.y * knockbackPwr, transform.position.z));
+
+        }
+
+        yield return 0;
+    }
+
+
     private void FixedUpdate()
     {
+        Collider2D standingOn = groundDown.DoRaycast(transform.position);
+        bool grounded = standingOn != null;
         switch (jumpState)
         {
             case JumpState.None:
@@ -267,22 +304,34 @@ public class RaycastPlayerController : MonoBehaviour {
             //gravity is always pulling down on the player
             velocity.y -= gravity * Time.deltaTime;
         }
+
         Vector2 displacement = Vector2.zero;
         Vector2 wantedDispl = velocity * Time.deltaTime;
 
+        if (standingOn != null){
+            //if you were standing on the same thing as lass frame, move with it
+            if(lastStandingOn == standingOn){
+                wantedDispl += (Vector2)standingOn.transform.position - lastStandingOnPos;
+            }
+            lastStandingOnPos = standingOn.transform.position;
+        }
+        lastStandingOn = standingOn;
+
+
+
         //for moving our character according to its velocity value
-        if(velocity.x > 0){
+        if (wantedDispl.x > 0){
             displacement.x = moveRight.DoRaycast(transform.position, wantedDispl.x);
         }
-        else if(velocity.x < 0){
+        else if(wantedDispl.x < 0){
             displacement.x = -moveLeft.DoRaycast(transform.position, -wantedDispl.x);
         }
 
-        if (velocity.y > 0)
+        if (wantedDispl.y > 0)
         {
             displacement.y = moveUp.DoRaycast(transform.position, wantedDispl.y);
         }
-        else if (velocity.y < 0)
+        else if (wantedDispl.y < 0)
         {
             displacement.y = -moveDown.DoRaycast(transform.position, -wantedDispl.y);
         }
@@ -312,8 +361,9 @@ public class RaycastPlayerController : MonoBehaviour {
 
         //this translate function is built into Unity, and it does just that-- moves our character around
         transform.Translate(displacement);
-		
-	}
+        
+    }
+
 
 
     //this changes the x value scale of the player to negative

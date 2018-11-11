@@ -26,8 +26,9 @@ public class RaycastCheckTouching {
     }
 
 
-    //a copy of the movement raycast function that just checks if you're hitting something
-    public bool DoRaycast(Vector2 origin)
+    //a copy of the movement raycast function that just checks if you're hitting something and returns what you hit, so you 
+    //can move with platforms
+    public Collider2D DoRaycast(Vector2 origin)
     {
         foreach (var offset in offsetPoints)
         {
@@ -35,11 +36,11 @@ public class RaycastCheckTouching {
 
             if (hit.collider != null)
             {
-                return true;
+                return hit.collider;
             }
 
         }
-        return false;
+        return null;
     }
 
     private RaycastHit2D Raycast(Vector2 start, Vector2 dir, float len, LayerMask mask)
