@@ -52,6 +52,8 @@ public class RaycastPlayerController : MonoBehaviour {
 
     private Vector2 velocity;
 
+    private bool canMove = true;
+
     //our raycasts for movement
     private RaycastMoveDirection moveDown;
     private RaycastMoveDirection moveLeft;
@@ -94,6 +96,7 @@ public class RaycastPlayerController : MonoBehaviour {
     void Start () {
 
         animator = GetComponent<Animator>();
+        rb2d = GetComponent<Rigidbody2D>();
 
         /*these weird numbers are setting the starting points for our vectors
         I couldn't (didn't try) get them to be nice numbers because it's based on the 
@@ -130,15 +133,17 @@ public class RaycastPlayerController : MonoBehaviour {
         }
     }
 
-    private void Update(){
+    private void Update()
+    {
 
         animator.SetBool("isGrounded", groundDown.DoRaycast(transform.position));
         animator.SetFloat("fallSpeed", velocity.y);
-
+        if (canMove) { 
         jumpStartTimer -= Time.deltaTime;
         bool jumpBtn = Input.GetButton("Jump");
         //if you weren't trying to jump last frame, jump!
-        if(jumpBtn && jumpInputDown == false){
+        if (jumpBtn && jumpInputDown == false)
+        {
             jumpStartTimer = jumpInputLeewayPeriod;
         }
         jumpInputDown = jumpBtn;
@@ -151,7 +156,7 @@ public class RaycastPlayerController : MonoBehaviour {
         }
 
         if (Input.GetButtonDown("SpeedButton") && presses == 0)
-        {   
+        {
             timeManager.UndoTime();
             presses += 1;
             StartCoroutine(Speed());
@@ -164,6 +169,7 @@ public class RaycastPlayerController : MonoBehaviour {
             StartCoroutine(Freeze());
 
         }
+    }
     }
 
 
@@ -234,21 +240,24 @@ public class RaycastPlayerController : MonoBehaviour {
     //For knockback, you're at 7:15 in the video
     public IEnumerator Knockback(float knockDur, float knockbackPwr, Vector3 knockbackDir)
     {
-
+        Debug.Log("Knockback is Happening!");
+        canMove = false;
         float timer = 0;
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+
 
         while (knockDur > timer)
         {
 
             timer += Time.deltaTime;
-
-            //RB.bodyType = RigidbodyType2D.Dynamic;
-
-            rb2d.AddForce(new Vector3(knockbackDir.x * -100, knockbackDir.y * knockbackPwr, transform.position.z));
-
+            rb2d.AddForce(-transform.right * knockbackPwr, ForceMode2D.Impulse);
+            yield return null;
         }
+        rb2d.velocity = Vector2.zero;
+        rb2d.bodyType = RigidbodyType2D.Kinematic;
+        canMove = true;
 
-        yield return 0;
+
     }
 
 
@@ -269,7 +278,8 @@ public class RaycastPlayerController : MonoBehaviour {
                 break;
             case JumpState.Holding:
                 jumpHoldTimer += Time.deltaTime;
-                if(jumpInputDown == false || jumpHoldTimer >= jumpMaxHoldPeriod){
+                if (jumpInputDown == false || jumpHoldTimer >= jumpMaxHoldPeriod)
+                {
                     jumpState = JumpState.None;
                     //The Lerp function serves to basically always make sure that the player is moving at a minimum speed in the air
                     velocity.y = Mathf.Lerp(jumpMinSpeed, jumpStartSpeed, jumpHoldTimer / jumpMaxHoldPeriod);
@@ -280,87 +290,98 @@ public class RaycastPlayerController : MonoBehaviour {
 
         /*for horizontal movement, the player will ramp up in speed until they hit max
         speed, then they will only move at max speed*/
-        float horizInput = Input.GetAxisRaw("Horizontal");
-        int wantedDirection = GetSign(horizInput);
-        int velocityDirection = GetSign(velocity.x);
-
-        if (wantedDirection != 0)
+        if (canMove)
         {
-            //if you want to turn around, you turn basically instantly, hence, SnapSpeed
-            if (wantedDirection != velocityDirection)
+            float horizInput = Input.GetAxisRaw("Horizontal");
+            int wantedDirection = GetSign(horizInput);
+            int velocityDirection = GetSign(velocity.x);
+
+            if (wantedDirection != 0)
             {
-                velocity.x = horizSnapSpeed * wantedDirection;
+                //if you want to turn around, you turn basically instantly, hence, SnapSpeed
+                if (wantedDirection != velocityDirection)
+                {
+                    velocity.x = horizSnapSpeed * wantedDirection;
+                }
+                else
+                {
+                    velocity.x = Mathf.MoveTowards(velocity.x, horizMaxSpeed * wantedDirection, horizAccel * Time.deltaTime);
+                }
             }
-            else{
-                velocity.x = Mathf.MoveTowards(velocity.x, horizMaxSpeed * wantedDirection, horizAccel * Time.deltaTime);
+            else
+            {
+                velocity.x = Mathf.MoveTowards(velocity.x, 0, horizDeccel * Time.deltaTime);
             }
-        }
-        else{
-            velocity.x = Mathf.MoveTowards(velocity.x, 0, horizDeccel * Time.deltaTime);
-        }
 
-        if (jumpState == JumpState.None)
-        {   
-            //gravity is always pulling down on the player
-            velocity.y -= gravity * Time.deltaTime;
-        }
-
-        Vector2 displacement = Vector2.zero;
-        Vector2 wantedDispl = velocity * Time.deltaTime;
-
-        if (standingOn != null){
-            //if you were standing on the same thing as lass frame, move with it
-            if(lastStandingOn == standingOn){
-                wantedDispl += (Vector2)standingOn.transform.position - lastStandingOnPos;
+            if (jumpState == JumpState.None)
+            {
+                //gravity is always pulling down on the player
+                velocity.y -= gravity * Time.deltaTime;
             }
-            lastStandingOnPos = standingOn.transform.position;
+
+            Vector2 displacement = Vector2.zero;
+            Vector2 wantedDispl = velocity * Time.deltaTime;
+
+            if (standingOn != null)
+            {
+                //if you were standing on the same thing as lass frame, move with it
+                if (lastStandingOn == standingOn)
+                {
+                    wantedDispl += (Vector2)standingOn.transform.position - lastStandingOnPos;
+                }
+                lastStandingOnPos = standingOn.transform.position;
+            }
+            lastStandingOn = standingOn;
+
+
+
+            //for moving our character according to its velocity value
+            if (wantedDispl.x > 0)
+            {
+                displacement.x = moveRight.DoRaycast(transform.position, wantedDispl.x);
+            }
+            else if (wantedDispl.x < 0)
+            {
+                displacement.x = -moveLeft.DoRaycast(transform.position, -wantedDispl.x);
+            }
+
+            if (wantedDispl.y > 0)
+            {
+                displacement.y = moveUp.DoRaycast(transform.position, wantedDispl.y);
+            }
+            else if (wantedDispl.y < 0)
+            {
+                displacement.y = -moveDown.DoRaycast(transform.position, -wantedDispl.y);
+            }
+
+            /*this is incase our player is clipping. If our wanted displacement is not about the same 
+            as our actual displacement, then we just flat out stop the player*/
+            if (Mathf.Approximately(displacement.x, wantedDispl.x) == false)
+            {
+                velocity.x = 0;
+            }
+            if (Mathf.Approximately(displacement.y, wantedDispl.y) == false)
+            {
+                velocity.y = 0;
+            }
+
+
+
+            animator.SetFloat("Speed", Mathf.Abs(velocity.x));
+
+            if (facingRight == false && velocity.x > 0)
+            {
+                Flip();
+            }
+            else if (facingRight == true && velocity.x < 0)
+            {
+                Flip();
+            }
+
+
+            //this translate function is built into Unity, and it does just that-- moves our character around
+            transform.Translate(displacement);
         }
-        lastStandingOn = standingOn;
-
-
-
-        //for moving our character according to its velocity value
-        if (wantedDispl.x > 0){
-            displacement.x = moveRight.DoRaycast(transform.position, wantedDispl.x);
-        }
-        else if(wantedDispl.x < 0){
-            displacement.x = -moveLeft.DoRaycast(transform.position, -wantedDispl.x);
-        }
-
-        if (wantedDispl.y > 0)
-        {
-            displacement.y = moveUp.DoRaycast(transform.position, wantedDispl.y);
-        }
-        else if (wantedDispl.y < 0)
-        {
-            displacement.y = -moveDown.DoRaycast(transform.position, -wantedDispl.y);
-        }
-
-        /*this is incase our player is clipping. If our wanted displacement is not about the same 
-        as our actual displacement, then we just flat out stop the player*/
-        if(Mathf.Approximately(displacement.x, wantedDispl.x) == false){
-            velocity.x = 0;
-        }
-        if (Mathf.Approximately(displacement.y, wantedDispl.y) == false)
-        {
-            velocity.y = 0;
-        }
-
-
-        animator.SetFloat("Speed", Mathf.Abs(velocity.x));
-
-        if (facingRight == false && velocity.x > 0)
-        {
-            Flip();
-        }
-        else if (facingRight == true && velocity.x < 0)
-        {
-            Flip();
-        }
-
-
-        //this translate function is built into Unity, and it does just that-- moves our character around
-        transform.Translate(displacement);
         
     }
 
@@ -376,6 +397,10 @@ public class RaycastPlayerController : MonoBehaviour {
         Scaler.x *= -1;
         transform.localScale = Scaler;
 
+    }
+
+    public void KnockbackFunc(float knockDur, float knockbackPwr, Vector3 knockbackDir){
+        StartCoroutine(Knockback(knockDur, knockbackPwr, transform.position));
     }
 
 }
