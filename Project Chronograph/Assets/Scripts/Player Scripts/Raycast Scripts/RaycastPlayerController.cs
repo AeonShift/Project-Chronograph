@@ -52,7 +52,7 @@ public class RaycastPlayerController : MonoBehaviour {
 
     private Vector2 velocity;
 
-    private bool canMove = true;
+    public bool canMove = true;
 
     //our raycasts for movement
     private RaycastMoveDirection moveDown;
@@ -238,7 +238,7 @@ public class RaycastPlayerController : MonoBehaviour {
     }
 
     //For knockback, you're at 7:15 in the video
-    public IEnumerator Knockback(float knockDur, float knockbackPwr, Vector3 knockbackDir)
+    public IEnumerator Knockback(float objectDir, float knockDur, float knockbackPwr)
     {
         Debug.Log("Knockback is Happening!");
         canMove = false;
@@ -250,7 +250,20 @@ public class RaycastPlayerController : MonoBehaviour {
         {
 
             timer += Time.deltaTime;
-            rb2d.AddForce(-transform.right * knockbackPwr, ForceMode2D.Impulse);
+            if (objectDir == -1f)
+            {
+                rb2d.AddForce(-transform.right * knockbackPwr, ForceMode2D.Impulse);
+            }
+            else if(objectDir == 1f){
+                rb2d.AddForce(transform.right * knockbackPwr, ForceMode2D.Impulse);
+            }
+            else if(objectDir == 0 && velocity.x > 0){
+                rb2d.AddForce(-transform.right * knockbackPwr, ForceMode2D.Impulse);
+            }
+            else if (objectDir == 0 && velocity.x < 0)
+            {
+                rb2d.AddForce(transform.right * knockbackPwr, ForceMode2D.Impulse);
+            }
             yield return null;
         }
         rb2d.velocity = Vector2.zero;
@@ -290,9 +303,15 @@ public class RaycastPlayerController : MonoBehaviour {
 
         /*for horizontal movement, the player will ramp up in speed until they hit max
         speed, then they will only move at max speed*/
+        float horizInput = Input.GetAxisRaw("Horizontal");
         if (canMove)
         {
-            float horizInput = Input.GetAxisRaw("Horizontal");
+             horizInput = Input.GetAxisRaw("Horizontal");
+
+        }
+        else {
+            horizInput = 0;
+        }
             int wantedDirection = GetSign(horizInput);
             int velocityDirection = GetSign(velocity.x);
 
@@ -381,7 +400,7 @@ public class RaycastPlayerController : MonoBehaviour {
 
             //this translate function is built into Unity, and it does just that-- moves our character around
             transform.Translate(displacement);
-        }
+        
         
     }
 
@@ -399,8 +418,9 @@ public class RaycastPlayerController : MonoBehaviour {
 
     }
 
-    public void KnockbackFunc(float knockDur, float knockbackPwr, Vector3 knockbackDir){
-        StartCoroutine(Knockback(knockDur, knockbackPwr, transform.position));
+    public void KnockbackFunc(float objectDir, float knockDur, float knockbackPwr)
+    {
+        StartCoroutine(Knockback(objectDir, knockDur, knockbackPwr));
     }
 
 }
