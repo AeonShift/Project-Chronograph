@@ -1454,7 +1454,42 @@ Prefab:
     - target: {fileID: 58009459847556596, guid: 0f2e3a5d466e045d09140836537fba86,
         type: 2}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212601283405096326, guid: 0f2e3a5d466e045d09140836537fba86,
+        type: 2}
+      propertyPath: m_Color.g
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212601283405096326, guid: 0f2e3a5d466e045d09140836537fba86,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212601283405096326, guid: 0f2e3a5d466e045d09140836537fba86,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 61307020943124920, guid: 0f2e3a5d466e045d09140836537fba86,
+        type: 2}
+      propertyPath: m_Offset.y
+      value: -0.7271308
+      objectReference: {fileID: 0}
+    - target: {fileID: 61307020943124920, guid: 0f2e3a5d466e045d09140836537fba86,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 2.7120035
+      objectReference: {fileID: 0}
+    - target: {fileID: 61307020943124920, guid: 0f2e3a5d466e045d09140836537fba86,
+        type: 2}
+      propertyPath: m_Offset.x
+      value: 0.25133577
+      objectReference: {fileID: 0}
+    - target: {fileID: 61307020943124920, guid: 0f2e3a5d466e045d09140836537fba86,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 0.54114395
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f2e3a5d466e045d09140836537fba86, type: 2}
@@ -2647,6 +2682,21 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 804765909}
   m_Script: {fileID: 11500000, guid: 21f078b2daf5b43cf87cdeba95066f6c, type: 3}
+--- !u!111 &1819066656
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1819066645}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: ac79e791714b2446aae4a2a81c867d01, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: ac79e791714b2446aae4a2a81c867d01, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1867180738
 GameObject:
   m_ObjectHideFlags: 0
