@@ -24,7 +24,7 @@ public class HurtPlayer : MonoBehaviour {
         {
             float direction = GetSign(rb2d.velocity.x);
             HealthManager.HurtPlayer(damageToGive);
-            //from left to right, knockback duration, knockbackspeed, and position to move from
+            //from left to right, enemy movement direction, knockback duration, and knockbackspeed
             player.KnockbackFunc(direction, .08f, 5);
         }
         

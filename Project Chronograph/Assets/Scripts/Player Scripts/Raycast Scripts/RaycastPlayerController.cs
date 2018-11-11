@@ -250,6 +250,7 @@ public class RaycastPlayerController : MonoBehaviour {
         {
 
             timer += Time.deltaTime;
+            //depending on the enemy's movement direction and your movement direction, you get knocked back the appropriate way
             if (objectDir == -1f)
             {
                 rb2d.AddForce(-transform.right * knockbackPwr, ForceMode2D.Impulse);
