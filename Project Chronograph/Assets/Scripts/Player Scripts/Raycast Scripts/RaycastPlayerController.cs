@@ -151,21 +151,21 @@ public class RaycastPlayerController : MonoBehaviour {
         if (Input.GetButtonDown("SlowButton") && presses == 0)
         {
             timeManager.UndoTime();
-            presses += 1;
+            //presses += 1;
             StartCoroutine(Slow());
         }
 
         if (Input.GetButtonDown("SpeedButton") && presses == 0)
         {
             timeManager.UndoTime();
-            presses += 1;
+            //presses += 1;
             StartCoroutine(Speed());
         }
 
         if (Input.GetButtonDown("FreezeButton") && presses == 0)
         {
             timeManager.UndoTime();
-            presses += 1;
+            //presses += 1;
             StartCoroutine(Freeze());
 
         }
@@ -174,12 +174,14 @@ public class RaycastPlayerController : MonoBehaviour {
 
 
     //Time stuff
+    /*the yield return nulls are at the beginning of every IEnumerator so that when TimePressed becomes true,
+    and another coroutine is started, while loop of the last time function is stopped */
     IEnumerator Slow()
     {
-
+        yield return null;
         float timePassed = 0;
 
-        while (timePassed < 3)
+        while (timePassed < 3 && !TimePressed())
         {
 
             timeManager.Slowdown();
@@ -197,18 +199,16 @@ public class RaycastPlayerController : MonoBehaviour {
 
     IEnumerator Speed()
     {
-
+        yield return null;
         float timePassed = 0;
 
-        while (timePassed < 3)
+        while (timePassed < 3 && !TimePressed())
         {
 
             timeManager.Speedup();
             timePassed += Time.deltaTime;
 
             yield return null;
-
-
         }
         timeManager.UndoTime();
         presses = 0;
@@ -218,10 +218,10 @@ public class RaycastPlayerController : MonoBehaviour {
 
     IEnumerator Freeze()
     {
-
+        yield return null;
         float timePassed = 0;
 
-        while (timePassed < 3)
+        while (timePassed < 3 && !TimePressed())
         {
 
             timeManager.Freeze();
@@ -235,6 +235,33 @@ public class RaycastPlayerController : MonoBehaviour {
         presses = 0;
 
 
+    }
+
+    //this function returns true or false and starts a coroutine if it detects time inputs
+    bool TimePressed(){
+        if (Input.GetButtonDown("SlowButton"))
+        {
+            timeManager.UndoTime();
+            StartCoroutine(Slow());
+            return true;
+        }
+
+        if (Input.GetButtonDown("SpeedButton"))
+        {
+            timeManager.UndoTime();
+            StartCoroutine(Speed());
+            return true;
+        }
+
+        if (Input.GetButtonDown("FreezeButton"))
+        {
+            timeManager.UndoTime();
+            StartCoroutine(Freeze());
+            return true;
+
+
+        }
+        return false;
     }
 
     //For knockback, you're at 7:15 in the video

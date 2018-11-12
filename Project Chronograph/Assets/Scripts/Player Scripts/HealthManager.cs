@@ -9,6 +9,12 @@ public class HealthManager : MonoBehaviour {
 
     public static int playerHealth;
 
+    public static bool invincible = false;
+
+   //GameObject player = GameObject.Find("RaycastPlayer");
+    //Animation anim = player.GetComponent<Animation>();
+
+
     Text text;
 
     private LevelManager levelManager;
@@ -21,7 +27,7 @@ public class HealthManager : MonoBehaviour {
         playerHealth = maxPlayerHealth;
         levelManager = FindObjectOfType<LevelManager>();
         hourglass = FindObjectOfType<Hourglass>();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -36,9 +42,12 @@ public class HealthManager : MonoBehaviour {
 
     public static void HurtPlayer(int damage)
     {
+        GameObject.Find("RaycastPlayer").GetComponent<Animation>().Play("Player_RedFlash");
         playerHealth -= damage;
     }
 
+
+   
 
     public void FullHp()
     {

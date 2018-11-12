@@ -20,14 +20,17 @@ public class HurtPlayer : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other)
     {
         var player = other.GetComponent<RaycastPlayerController>();
-        if (other.CompareTag("Player"))
-        {
-            float direction = GetSign(rb2d.velocity.x);
-            HealthManager.HurtPlayer(damageToGive);
-            //from left to right, enemy movement direction, knockback duration, and knockbackspeed
-            player.KnockbackFunc(direction, .08f, 5);
+        if (!HealthManager.invincible) { 
+            if (other.CompareTag("Player"))
+            {
+                HealthManager.invincible = true;
+                float direction = GetSign(rb2d.velocity.x);
+                HealthManager.HurtPlayer(damageToGive);
+                //from left to right, enemy movement direction, knockback duration, and knockbackspeed
+                player.KnockbackFunc(direction, .08f, 5);
+                Invoke("resetInvulnerability", 1);
+            }
         }
-        
     }
 
     //helper function for finding our wanted and velocity directions
@@ -45,5 +48,9 @@ public class HurtPlayer : MonoBehaviour {
         {
             return -1;
         }
+    }
+
+    private void resetInvulnerability(){
+        HealthManager.invincible = false;
     }
 }
