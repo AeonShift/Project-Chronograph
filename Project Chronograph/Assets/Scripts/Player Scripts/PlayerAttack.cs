@@ -11,17 +11,6 @@ public class PlayerAttack : MonoBehaviour {
     public int Damage;
     public Animator animator;
     public bool attacking = false;
-    public RaycastPlayerController playerCont;
-
-
-
-    private void Start()
-    {
-        //GameObject player = GameObject.Find("RaycastPlayer");
-        //RaycastPlayerController playerCont = player.GetComponent<RaycastPlayerController>();
-        //playerCont.canMove = false;
-    }
-
 
     private void Update()
     {
@@ -41,36 +30,18 @@ public class PlayerAttack : MonoBehaviour {
 
         }
 
-        if (attacking  && animator.GetBool("isGrounded")){
+        if(attacking){
             if(timeBtwAttack > 0){
 
-                playerCont.canMove = false;
                 timeBtwAttack -= Time.deltaTime;
             }
             else {
 
-                playerCont.canMove = true;
                 attacking = false;
             }
 
         }
-        if (attacking && !animator.GetBool("isGrounded"))
-        {
-            if (timeBtwAttack > 0)
-            {
-
-                playerCont.canMove = true;
-                timeBtwAttack -= Time.deltaTime;
-            }
-            else
-            {
-
-                playerCont.canMove = true;
-                attacking = false;
-            }
-
-        }
-
+       
         animator.SetBool("isAttacking", attacking);
     }
 

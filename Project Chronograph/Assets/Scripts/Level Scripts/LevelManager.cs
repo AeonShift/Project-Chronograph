@@ -11,10 +11,10 @@ public class LevelManager : MonoBehaviour {
     public HealthManager healthManager;
 
 
-    private RaycastPlayerController player;
+    private PlayerController player;
 	// Use this for initialization
 	void Start () {
-        player = FindObjectOfType<RaycastPlayerController>();
+        player = FindObjectOfType<PlayerController>();
         healthManager = FindObjectOfType<HealthManager>();
 	}
 	
