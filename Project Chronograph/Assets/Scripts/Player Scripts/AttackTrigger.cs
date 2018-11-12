@@ -5,13 +5,13 @@ using UnityEngine;
 public class AttackTrigger : MonoBehaviour {
 
     public int damage = 1;
-    public EnemyHealthManager Ehealthman;
+    public EnemyHealthManager enemyHealthMan;
 
     void OnTrggerEnter2D(Collider2D col){
 
         if(col.isTrigger != true && col.CompareTag("Enemy")){
 
-            Ehealthman.giveDamage(damage);
+            enemyHealthMan.giveDamage(damage);
 
         }
 
