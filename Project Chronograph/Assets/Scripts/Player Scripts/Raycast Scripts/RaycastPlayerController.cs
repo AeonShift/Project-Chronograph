@@ -174,6 +174,8 @@ public class RaycastPlayerController : MonoBehaviour {
 
 
     //Time stuff
+    /*the yield return nulls are at the beginning of every IEnumerator so that when TimePressed becomes true,
+    and another coroutine is started, while loop of the last time function is stopped */
     IEnumerator Slow()
     {
         yield return null;
@@ -235,6 +237,7 @@ public class RaycastPlayerController : MonoBehaviour {
 
     }
 
+    //this function returns true or false and starts a coroutine if it detects time inputs
     bool TimePressed(){
         if (Input.GetButtonDown("SlowButton"))
         {
