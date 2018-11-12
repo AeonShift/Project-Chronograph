@@ -27,7 +27,7 @@ public class PlayerAttack : MonoBehaviour {
     {
         if(timeBtwAttack <= 0){
             //then you can attack
-            if(Input.GetButton("Attack") && !attacking){
+            if(Input.GetButtonDown("Attack") && !attacking){
                 attacking = true;
                 timeBtwAttack = startTimeBtwAttack;
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);

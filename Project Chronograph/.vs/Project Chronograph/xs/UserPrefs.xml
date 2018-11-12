@@ -5,7 +5,7 @@
       <File FileName="Assets/Scripts/Player Scripts/Raycast Scripts/RaycastCheckTouching.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Player Scripts/Raycast Scripts/RaycastMoveDirection.cs" Line="15" Column="67" />
       <File FileName="Assets/Scripts/Enemy Scripts/HurtPlayer.cs" Line="31" Column="49" />
-      <File FileName="Assets/Scripts/Player Scripts/Raycast Scripts/RaycastPlayerController.cs" Line="253" Column="128" />
+      <File FileName="Assets/Scripts/Player Scripts/Raycast Scripts/RaycastPlayerController.cs" Line="253" Column="25" />
       <File FileName="Assets/Scripts/Player Scripts/HealthManager.cs" Line="45" Column="34" />
       <File FileName="Assets/Scripts/Player Scripts/PlayerAttack.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Player Scripts/AttackTrigger.cs" Line="1" Column="1" />

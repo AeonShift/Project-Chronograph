@@ -236,6 +236,14 @@ public class RaycastPlayerController : MonoBehaviour {
 
 
     }
+    IEnumerator Cancel()
+    {
+        yield return null;
+        timeManager.UndoTime();
+        presses = 0;
+
+
+    }
 
     //this function returns true or false and starts a coroutine if it detects time inputs
     bool TimePressed(){
@@ -258,8 +266,11 @@ public class RaycastPlayerController : MonoBehaviour {
             timeManager.UndoTime();
             StartCoroutine(Freeze());
             return true;
-
-
+        }
+        if(Input.GetButtonDown("CancelTimeButton")){
+            timeManager.UndoTime();
+            StartCoroutine(Cancel());
+            return true;
         }
         return false;
     }
