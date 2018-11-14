@@ -31,13 +31,21 @@ public class EnemyGroundMovement : MonoBehaviour {
 
         if (moveRight)
         {
+<<<<<<< HEAD
             transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f) ;
+=======
+            transform.localScale = new Vector3(-.5f, .5f, .5f) ;
+>>>>>>> PlayerBehavior
             GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed * timeManager.scalingFactor, GetComponent<Rigidbody2D>().velocity.y);
             spriteRenderer.flipX = true;
         }
         else
         {
+<<<<<<< HEAD
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+=======
+            transform.localScale = new Vector3(.5f, .5f, .5f);
+>>>>>>> PlayerBehavior
             GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed * timeManager.scalingFactor, GetComponent<Rigidbody2D>().velocity.y);
             spriteRenderer.flipX = false;
         }
