@@ -11,6 +11,36 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1569966584207686}
   m_IsPrefabAsset: 1
+--- !u!1 &1065058165153850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4626177915333398}
+  m_Layer: 10
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1391544053278140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4305153334078362}
+  m_Layer: 10
+  m_Name: Wall Check
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1569966584207686
 GameObject:
   m_ObjectHideFlags: 0
@@ -24,9 +54,9 @@ GameObject:
   - component: {fileID: 58504563580344430}
   - component: {fileID: 114393625908796058}
   - component: {fileID: 61615136607520116}
-  - component: {fileID: 114836284334914058}
   - component: {fileID: 114363394146834692}
   - component: {fileID: 95970714189573208}
+  - component: {fileID: 114853535743488210}
   m_Layer: 10
   m_Name: Ground Enemies
   m_TagString: Enemy
@@ -34,33 +64,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1991535034158058
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4134894293415220}
-  m_Layer: 10
-  m_Name: WallCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4134894293415220
+--- !u!4 &4305153334078362
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1991535034158058}
+  m_GameObject: {fileID: 1391544053278140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: -1.65, z: 0}
-  m_LocalScale: {x: 1.8905632, y: 1.021926, z: 1.021926}
+  m_LocalPosition: {x: 1.66, y: -1.72, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4435234642816920}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4435234642816920
 Transform:
@@ -69,11 +84,25 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1569966584207686}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.88, y: -12.33, z: 0}
+  m_LocalPosition: {x: 20.58, y: -12.38, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
-  - {fileID: 4134894293415220}
+  - {fileID: 4626177915333398}
+  - {fileID: 4305153334078362}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4626177915333398
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1065058165153850}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.95, y: -1.84, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4435234642816920}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50754810200701290
@@ -178,7 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageToGive: 1
---- !u!114 &114836284334914058
+--- !u!114 &114853535743488210
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -186,17 +215,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1569966584207686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2565472fd2ac1744592190026c1a1945, type: 3}
+  m_Script: {fileID: 11500000, guid: 551fc718edd2fe5439dfe020551786b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  moveRight: 0
-  wallCheck: {fileID: 4134894293415220}
-  wallCheck2: 0.4
+  speed: 3
+  distance: 1
+  groundDetection: {fileID: 4626177915333398}
+  wallCheck: {fileID: 4305153334078362}
+  wallRadius: 0.2
+  hittingWall: 0
   DefineWall:
     serializedVersion: 2
-    m_Bits: 256
-  timeManager: {fileID: 0}
+    m_Bits: 4096
 --- !u!212 &212129366812308116
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -234,7 +264,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 88b7dcff6ebc91048ba4dcc06e8039fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 0.75}
