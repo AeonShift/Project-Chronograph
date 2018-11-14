@@ -11,12 +11,23 @@ public class PlayerAttack : MonoBehaviour {
     public int Damage;
     public Animator animator;
     public bool attacking = false;
+    public RaycastPlayerController playerCont;
+
+
+
+    private void Start()
+    {
+        //GameObject player = GameObject.Find("RaycastPlayer");
+        //RaycastPlayerController playerCont = player.GetComponent<RaycastPlayerController>();
+        //playerCont.canMove = false;
+    }
+
 
     private void Update()
     {
         if(timeBtwAttack <= 0){
             //then you can attack
-            if(Input.GetButton("Attack") && !attacking){
+            if(Input.GetButtonDown("Attack") && !attacking){
                 attacking = true;
                 timeBtwAttack = startTimeBtwAttack;
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
@@ -30,18 +41,36 @@ public class PlayerAttack : MonoBehaviour {
 
         }
 
-        if(attacking){
+        if (attacking  && animator.GetBool("isGrounded")){
             if(timeBtwAttack > 0){
 
+                playerCont.canMove = false;
                 timeBtwAttack -= Time.deltaTime;
             }
             else {
 
+                playerCont.canMove = true;
                 attacking = false;
             }
 
         }
-       
+        if (attacking && !animator.GetBool("isGrounded"))
+        {
+            if (timeBtwAttack > 0)
+            {
+
+                playerCont.canMove = true;
+                timeBtwAttack -= Time.deltaTime;
+            }
+            else
+            {
+
+                playerCont.canMove = true;
+                attacking = false;
+            }
+
+        }
+
         animator.SetBool("isAttacking", attacking);
     }
 

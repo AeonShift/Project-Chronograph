@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowMovement : MonoBehaviour {
-    private PlayerController thePlayer;
+    private RaycastPlayerController thePlayer;
     public float moveSpeed;
     public float playerRange;
     public TimeManager timeManager;
@@ -15,7 +15,7 @@ public class FollowMovement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        thePlayer = FindObjectOfType<PlayerController>();
+        thePlayer = FindObjectOfType<RaycastPlayerController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 	
