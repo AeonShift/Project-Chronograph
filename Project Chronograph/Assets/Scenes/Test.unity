@@ -636,6 +636,7 @@ GameObject:
   - component: {fileID: 503331331}
   - component: {fileID: 503331334}
   - component: {fileID: 503331338}
+  - component: {fileID: 503331339}
   m_Layer: 10
   m_Name: Flier 1
   m_TagString: Enemy
@@ -804,6 +805,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &503331339
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 503331330}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,12 +1788,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
-    randomVolume: 0
-    randomPitch: 0
+  - name: AttackPress
+    clip: {fileID: 8300000, guid: 6d583445465c5b044b766be2cf51f8cb, type: 3}
+    volume: 0.582
+    pitch: 0.169
+    randomVolume: 0.09
+    randomPitch: 0.063
     loop: 0
 --- !u!4 &1200296156
 Transform:
@@ -2423,7 +2444,6 @@ GameObject:
   - component: {fileID: 1819066656}
   - component: {fileID: 1819066646}
   - component: {fileID: 1819066654}
-  - component: {fileID: 1819066655}
   - component: {fileID: 1819066649}
   - component: {fileID: 1819066653}
   - component: {fileID: 1819066652}
@@ -2629,23 +2649,8 @@ MonoBehaviour:
   Damage: 1
   animator: {fileID: 1819066653}
   attacking: 0
---- !u!114 &1819066655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1819066645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21f078b2daf5b43cf87cdeba95066f6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  platformMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  gravity: 0
-  parallelInsetLen: 0
-  perpendicularInsetLen: 0
+  playerCont: {fileID: 1819066656}
+  attackSwingSound: AttackPress
 --- !u!114 &1819066656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2660,9 +2665,21 @@ MonoBehaviour:
   platformMask:
     serializedVersion: 2
     m_Bits: 256
-  gravity: 9.8
-  parallelInsetLen: 0
-  perpendicularInsetLen: 0
+  gravity: 32
+  horizAccel: 20
+  horizDeccel: 40
+  horizMaxSpeed: 7
+  horizSnapSpeed: 3
+  parallelInsetLen: 0.5
+  perpendicularInsetLen: 0.05
+  groundTestLength: 0.05
+  jumpInputLeewayPeriod: 0.25
+  jumpStartSpeed: 10
+  jumpMaxHoldPeriod: 0.2
+  jumpMinSpeed: 2
+  canMove: 1
+  playerAttack: {fileID: 1819066654}
+  timeManager: {fileID: 1764392799}
 --- !u!1 &1867180738
 GameObject:
   m_ObjectHideFlags: 0

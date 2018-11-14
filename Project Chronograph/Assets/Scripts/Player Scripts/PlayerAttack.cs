@@ -12,7 +12,10 @@ public class PlayerAttack : MonoBehaviour {
     public Animator animator;
     public bool attacking = false;
     public RaycastPlayerController playerCont;
+    public string attackSwingSound = "AttackPress";
 
+    //Caching AudioManager
+    AudioManager audioManager;
 
 
     private void Start()
@@ -20,6 +23,12 @@ public class PlayerAttack : MonoBehaviour {
         //GameObject player = GameObject.Find("RaycastPlayer");
         //RaycastPlayerController playerCont = player.GetComponent<RaycastPlayerController>();
         //playerCont.canMove = false;
+
+        audioManager = AudioManager.Instance;
+            if (audioManager == null)
+        {
+            Debug.LogError("No AudioManager found. Go find it.");
+        }
     }
 
 
@@ -28,6 +37,9 @@ public class PlayerAttack : MonoBehaviour {
         if(timeBtwAttack <= 0){
             //then you can attack
             if(Input.GetButton("Attack") && !attacking){
+                //play a sound 
+                audioManager.PlaySound(attackSwingSound);
+
                 attacking = true;
                 timeBtwAttack = startTimeBtwAttack;
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
@@ -36,7 +48,7 @@ public class PlayerAttack : MonoBehaviour {
                     enemiesToDamage[i].GetComponent<EnemyHealthManager>().giveDamage(Damage);
 
                 }
-
+                
             }
 
         }
