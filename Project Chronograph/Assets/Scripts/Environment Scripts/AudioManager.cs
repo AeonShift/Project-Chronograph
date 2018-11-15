@@ -52,9 +52,11 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null)
+        Instance = this;
+        DontDestroyOnLoad(this);
+       /* if (Instance != null)
         {
-            if (Instance != this)
+            if (Instance == this)
             {
                 Destroy(this.gameObject);
             }
@@ -63,7 +65,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
-        }
+        }  */
     }
 
     void Start()
