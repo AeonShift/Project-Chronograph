@@ -28,7 +28,7 @@ public class FollowMovement : MonoBehaviour {
         {
             if (playerInRange)
             {
-                transform.position = Vector3.MoveTowards(transform.position, thePlayer.transform.position, moveSpeed * timeManager.customDeltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, thePlayer.transform.position, moveSpeed * timeManager.customDeltaTime * (timeManger.scalingfactor + timeManager.timezonescaling));
                 return;
             }
         }
