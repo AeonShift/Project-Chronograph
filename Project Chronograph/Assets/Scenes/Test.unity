@@ -2982,6 +2982,7 @@ GameObject:
   - component: {fileID: 2120095437}
   - component: {fileID: 2120095436}
   - component: {fileID: 2120095438}
+  - component: {fileID: 2120095439}
   m_Layer: 8
   m_Name: One-Way Platform
   m_TagString: Untagged
@@ -3065,3 +3066,15 @@ EdgeCollider2D:
   m_Points:
   - {x: -0.16, y: 0}
   - {x: 0.16, y: 0}
+--- !u!114 &2120095439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2120095435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c58ead04c151a499db468be6dcd62889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  permitDirection: {x: 0, y: 1}
