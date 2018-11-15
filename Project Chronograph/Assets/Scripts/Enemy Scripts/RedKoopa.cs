@@ -27,7 +27,7 @@ public class RedKoopa : MonoBehaviour {
         hittingWall = Physics2D.OverlapCircle(wallCheck.position, wallRadius, DefineWall);
 
         transform.Translate(Vector2.right * speed * Time.deltaTime);
-        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, 2f);
+        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, 1f);
         if (groundInfo.collider == false || hittingWall == true)
         {
             if (movingRight == true)
