@@ -112,7 +112,7 @@ public class RaycastPlayerController : MonoBehaviour {
             platformMask, Vector2.right * parallelInsetLen, Vector2.down * perpendicularInsetLen);
 
         moveRight = new RaycastMoveDirection(new Vector2(0.42809565f, -1.37f), new Vector2(0.42809565f, 1.37f), Vector2.right,
-            platformMask, Vector2.up * parallelInsetLen, Vector2.left * perpendicularInsetLen);
+        platformMask, Vector2.up * parallelInsetLen, Vector2.left * perpendicularInsetLen);
 
         //might need another ground one for all directions for crouching and wall jumping
         groundDown = new RaycastCheckTouching(new Vector2(-0.42809565f, -1.37f), new Vector2(0.42809565f, 0.75f), Vector2.down,
@@ -205,10 +205,12 @@ public class RaycastPlayerController : MonoBehaviour {
         while (timePassed < 3 && !TimePressed())
         {
 
-            timeManager.Speedup();
+            timeManager.Freeze();
             timePassed += Time.deltaTime;
 
             yield return null;
+
+
         }
         timeManager.UndoTime();
         presses = 0;
@@ -245,7 +247,10 @@ public class RaycastPlayerController : MonoBehaviour {
 
     }
 
-    //this function returns true or false and starts a coroutine if it detects time inputs
+
+ 
+
+        //this function returns true or false and starts a coroutine if it detects time inputs
     bool TimePressed(){
         if (Input.GetButtonDown("SlowButton"))
         {
@@ -274,6 +279,7 @@ public class RaycastPlayerController : MonoBehaviour {
         }
         return false;
     }
+
 
     //For knockback, you're at 7:15 in the video
     public IEnumerator Knockback(float objectDir, float knockDur, float knockbackPwr)

@@ -30,10 +30,16 @@ public class TimeManager : MonoBehaviour {
 
         scalingFactor = 0;
 
+
     }
     public void UndoTime() {
 
         scalingFactor = 1f;
+
+    }
+    public void zoneEffect(float zoneSpeed)
+    {
+        scalingFactor = zoneSpeed;
     }
 
 
