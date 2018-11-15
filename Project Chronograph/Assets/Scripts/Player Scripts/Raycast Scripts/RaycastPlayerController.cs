@@ -105,13 +105,13 @@ public class RaycastPlayerController : MonoBehaviour {
         moveDown = new RaycastMoveDirection(new Vector2(-0.42809565f, -1.37f), new Vector2(0.42809565f, -1.37f), Vector2.down,
             platformMask, Vector2.right * parallelInsetLen, Vector2.up * perpendicularInsetLen);
 
-        moveLeft = new RaycastMoveDirection(new Vector2(-0.42809565f, -1.37f), new Vector2(-0.42809565f, 1.37f), Vector2.left,
+        moveLeft = new RaycastMoveDirection(new Vector2(-0.42809565f, -1.37f), new Vector2(-0.42809565f, .87f), Vector2.left,
             platformMask, Vector2.up * parallelInsetLen, Vector2.right * perpendicularInsetLen);
 
         moveUp = new RaycastMoveDirection(new Vector2(-0.42809565f, .67f), new Vector2(0.42809565f, .67f), Vector2.up,
             platformMask, Vector2.right * parallelInsetLen, Vector2.down * perpendicularInsetLen);
 
-        moveRight = new RaycastMoveDirection(new Vector2(0.42809565f, -1.37f), new Vector2(0.42809565f, 1.37f), Vector2.right,
+        moveRight = new RaycastMoveDirection(new Vector2(0.42809565f, -1.37f), new Vector2(0.42809565f, 0.87f), Vector2.right,
             platformMask, Vector2.up * parallelInsetLen, Vector2.left * perpendicularInsetLen);
 
         //might need another ground one for all directions for crouching and wall jumping
@@ -228,6 +228,7 @@ public class RaycastPlayerController : MonoBehaviour {
             timePassed += Time.deltaTime;
 
             yield return null;
+
 
         }
         timeManager.UndoTime();
@@ -404,7 +405,7 @@ public class RaycastPlayerController : MonoBehaviour {
 
             if (wantedDispl.y > 0)
             {
-                displacement.y = moveUp.DoRaycast(transform.position , wantedDispl.y);
+                displacement.y = moveUp.DoRaycast(transform.position, wantedDispl.y);
             }
             else if (wantedDispl.y < 0)
             {
