@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeZone : MonoBehaviour {
+public class TimeZone : MonoBehaviour
+{
 
     public TimeManager timeManager;
 
     public float timeSpeed;
 
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
             //timeManager.SlowZoneEffect(timeSpeed);
         }
+
     }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.tag == "Player")
+    void OnTriggerExit2D(Collider2D other)
         {
-            timeManager.UndoTime();
+            if (other.tag == "Player")
+            {
+                timeManager.UndoTime();
+            }
+
+
         }
+
     }
-}

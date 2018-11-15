@@ -31,7 +31,6 @@ public class EnemyGroundMovement : MonoBehaviour {
 
         if (moveRight)
         {
-
             transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f) ;
 
             GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed * timeManager.scalingFactor, GetComponent<Rigidbody2D>().velocity.y);
@@ -41,7 +40,6 @@ public class EnemyGroundMovement : MonoBehaviour {
         {
 
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-
             GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed * timeManager.scalingFactor, GetComponent<Rigidbody2D>().velocity.y);
             spriteRenderer.flipX = false;
         }
