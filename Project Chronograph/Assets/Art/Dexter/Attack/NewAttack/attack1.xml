@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="attack1.png">
+	<!-- Created with Adobe Animate version 18.0.2.126 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="attack10000" x="0" y="0" width="313" height="316"/>
+	<SubTexture name="attack10001" x="313" y="0" width="313" height="316"/>
+	<SubTexture name="attack10002" x="626" y="0" width="313" height="316"/>
+	<SubTexture name="attack10003" x="0" y="316" width="313" height="316"/>
+	<SubTexture name="attack10004" x="313" y="316" width="313" height="316"/>
+	<SubTexture name="attack10005" x="626" y="316" width="313" height="316"/>
+	<SubTexture name="attack10006" x="0" y="632" width="313" height="316"/>
+	<SubTexture name="attack10007" x="313" y="632" width="313" height="316"/>
+	<SubTexture name="attack10008" x="626" y="632" width="313" height="316"/>
+	<SubTexture name="attack10009" x="0" y="948" width="313" height="316"/>
+	<SubTexture name="attack10010" x="313" y="948" width="313" height="316"/>
+	<SubTexture name="attack10011" x="626" y="948" width="313" height="316"/>
+</TextureAtlas>
