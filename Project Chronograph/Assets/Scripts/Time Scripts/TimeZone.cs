@@ -12,7 +12,7 @@ public class TimeZone : MonoBehaviour {
     {
         if(other.tag == "Player")
         {
-            timeManager.zoneEffect(timeSpeed);
+            //timeManager.SlowZoneEffect(timeSpeed);
         }
     }
 
