@@ -11,11 +11,14 @@ public class HealthManager : MonoBehaviour {
 
     public static bool invincible = false;
 
-   //GameObject player = GameObject.Find("RaycastPlayer");
-    //Animation anim = player.GetComponent<Animation>();
+    //To display health through the heart images
+    Image hearts;
+    public Sprite heartsFull;
+    public Sprite heartsHalf;
+    public Sprite heartsOne;
+    public Sprite heartsNone;
 
-
-    Text text;
+    Text healthText;
 
     private LevelManager levelManager;
 
@@ -23,8 +26,9 @@ public class HealthManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        text = GetComponent<Text>();
+        healthText = GetComponent<Text>();
         playerHealth = maxPlayerHealth;
+        hearts = GetComponent<Image>();
         levelManager = FindObjectOfType<LevelManager>();
         hourglass = FindObjectOfType<Hourglass>();
     }
@@ -37,7 +41,19 @@ public class HealthManager : MonoBehaviour {
             playerHealth = 0;
             levelManager.RespawnPlayer();
         }
-        text.text = "" + playerHealth;
+        //healthText.text = "Health: " + playerHealth;
+        if(playerHealth == 3){
+            hearts.sprite = heartsFull;
+        }
+        else if(playerHealth == 2){
+            hearts.sprite = heartsHalf;
+        }
+        else if(playerHealth == 1){
+            hearts.sprite = heartsOne;
+        }
+        else if(playerHealth <= 0){
+            hearts.sprite = heartsNone;
+        }
 	}
 
     public static void HurtPlayer(int damage)

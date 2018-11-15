@@ -229,7 +229,6 @@ public class RaycastPlayerController : MonoBehaviour {
 
             yield return null;
 
-
         }
         timeManager.UndoTime();
         presses = 0;
@@ -405,7 +404,7 @@ public class RaycastPlayerController : MonoBehaviour {
 
             if (wantedDispl.y > 0)
             {
-                displacement.y = moveUp.DoRaycast(transform.position, wantedDispl.y);
+                displacement.y = moveUp.DoRaycast(transform.position , wantedDispl.y);
             }
             else if (wantedDispl.y < 0)
             {
