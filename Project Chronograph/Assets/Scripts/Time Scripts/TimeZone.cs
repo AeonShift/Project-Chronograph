@@ -8,19 +8,31 @@ public class TimeZone : MonoBehaviour {
 
     public float timeSpeed;
 
+    private List<GameObject> affectedObjects = new List<GameObject>();
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "MovingPlatform" || other.tag == "Enemy" || other.tag == "Player")
         {
-            timeManager.zoneEffect(timeSpeed);
+            Debug.Log("affected");
+            affectedObjects.Add(other.gameObject);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "MovingPlatform" || other.tag == "Enemy" || other.tag == "Player")
         {
-            timeManager.UndoTime();
+            Debug.Log("Defected");
+            affectedObjects.Remove(affectedObjects.Find(x => x.name.Equals(other.name)));
         }
+    }
+
+    private void Update()
+    {
+        for(int i = 0; i < affectedObjects.Count; i++)
+        {
+           affectedObjects[i].GetComponent<Rigidbody2D>().velocity *= timeSpeed;
+        } 
     }
 }
