@@ -39092,6 +39092,13 @@ MonoBehaviour:
     randomVolume: 0.037
     randomPitch: 0.042
     loop: 0
+  - name: Music
+    clip: {fileID: 8300000, guid: efd8ab69571ccda4598a6c1f6a3899de, type: 3}
+    volume: 0.4
+    pitch: 1.001
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
 --- !u!4 &1249077442
 Transform:
   m_ObjectHideFlags: 0

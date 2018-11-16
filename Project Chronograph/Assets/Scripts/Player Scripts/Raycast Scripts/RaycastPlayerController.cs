@@ -86,8 +86,8 @@ public class RaycastPlayerController : MonoBehaviour {
     //for Knockback
     private Rigidbody2D rb2d;
 
-   
 
+    public float timeScalingFactor = 1f;
 
 
 
@@ -170,6 +170,11 @@ public class RaycastPlayerController : MonoBehaviour {
 
         }
     }
+    }
+
+    public void UpdateScale(float scale)
+    {
+        timeScalingFactor = scale;
     }
 
 

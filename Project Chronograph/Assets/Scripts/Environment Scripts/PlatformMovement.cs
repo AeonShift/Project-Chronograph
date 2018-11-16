@@ -16,8 +16,10 @@ public class PlatformMovement : MonoBehaviour {
 
     public int pointSelection;
 
-	// Use this for initialization
-	void Start () {
+    private float timeScalingFactor = 1.0f;
+
+    // Use this for initialization
+    void Start () {
 
         currentPoint = points[pointSelection];
 		
@@ -25,7 +27,8 @@ public class PlatformMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        platform.transform.position = Vector3.MoveTowards(platform.transform.position, currentPoint.position, timeManager.customDeltaTime * moveSpeed);
+
+        platform.transform.position = Vector3.MoveTowards(platform.transform.position, currentPoint.position, timeManager.customDeltaTime * moveSpeed * timeScalingFactor);
        
         if (platform.transform.position == currentPoint.position)
         {
@@ -41,5 +44,10 @@ public class PlatformMovement : MonoBehaviour {
 
         }
 	}
+
+    public void UpdateScale(float scale)
+    {
+        timeScalingFactor = scale;
+    }
 
 }
