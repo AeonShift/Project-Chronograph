@@ -111,7 +111,7 @@ public class RaycastPlayerController : MonoBehaviour {
         moveUp = new RaycastMoveDirection(new Vector2(-0.42809565f, .67f), new Vector2(0.42809565f, .67f), Vector2.up,
             platformMask, Vector2.right * parallelInsetLen, Vector2.down * perpendicularInsetLen);
 
-        moveRight = new RaycastMoveDirection(new Vector2(0.42809565f, -1.37f), new Vector2(0.42809565f, 1.37f), Vector2.right,
+        moveRight = new RaycastMoveDirection(new Vector2(0.42809565f, -1.77f), new Vector2(0.42809565f, 1.37f), Vector2.right,
         platformMask, Vector2.up * parallelInsetLen, Vector2.left * perpendicularInsetLen);
 
         //might need another ground one for all directions for crouching and wall jumping

@@ -52,20 +52,21 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
-        DontDestroyOnLoad(this);
-       /* if (Instance != null)
+        
+        if (Instance != null)
         {
             if (Instance == this)
             {
-                Destroy(this.gameObject);
-            }
+                DestroyImmediate(this.gameObject);
+            } 
+            
         }
         else
         {
             Instance = this;
             DontDestroyOnLoad(this);
-        }  */
+        }
+
     }
 
     void Start()

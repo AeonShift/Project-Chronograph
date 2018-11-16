@@ -38,12 +38,12 @@ public class LevelManager : MonoBehaviour {
         player.GetComponent<Renderer>().enabled = true;
         healthManager.FullHp();
         player.transform.position = currentCheckpoint.transform.position;
-        hardRestartGame();
+        //hardRestartGame();
        
     }
 
-    void hardRestartGame()
+    /*void hardRestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    }*/
 }

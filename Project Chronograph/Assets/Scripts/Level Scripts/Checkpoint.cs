@@ -18,7 +18,7 @@ public class Checkpoint : MonoBehaviour {
 	}
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "RaycastPlayer")
+        if (other.name == "Player")
         {
             levelManager.currentCheckpoint = gameObject;
         }
