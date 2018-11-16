@@ -29605,14 +29605,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1298067960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9210f51274b774711a3e5e8b5b6e5541, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bdd85e847fbf44c1a787f67ab32203c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platform: {fileID: 0}
-  moveSpeed: 0
-  points: []
-  timeManager: {fileID: 0}
-  pointSelection: 0
+  dir: {x: 1, y: 0}
+  radius: 3
+  speed: 2
+  timeManager: {fileID: 1537384629}
 --- !u!61 &1298067962
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -29691,7 +29690,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1298067960}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.78, y: -7.26, z: 0}
+  m_LocalPosition: {x: 26.39, y: -7.26, z: 0}
   m_LocalScale: {x: 0.933966, y: 0.5783996, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -30810,6 +30809,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4769557330764872, guid: 5a01ed0ad8a743c4dbb2df2fbe87c3d3,
     type: 2}
   m_PrefabInternal: {fileID: 1730846610}
+--- !u!114 &1537384629 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114816862082633080, guid: dcb9dcdd551137e4b8b10358b7e4874c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1596131112}
+  m_Script: {fileID: 11500000, guid: 7c66d66507e0e4f9991818677f005fa4, type: 3}
 --- !u!1001 &1564464089
 Prefab:
   m_ObjectHideFlags: 0
