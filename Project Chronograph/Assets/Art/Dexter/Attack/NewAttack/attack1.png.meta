@@ -1,7 +1,19 @@
 fileFormatVersion: 2
 guid: 3b2ea67e56dbf44e98efdf1efd7d84fd
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: attack10000
+    21300002: attack10001
+    21300004: attack10002
+    21300006: attack10003
+    21300008: attack10004
+    21300010: attack10005
+    21300012: attack10006
+    21300014: attack10007
+    21300016: attack10008
+    21300018: attack10009
+    21300020: attack10010
+    21300022: attack10011
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -40,7 +52,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -71,7 +83,247 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: attack10000
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1732
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd272ccc12ace4798ae76494f53502bc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10001
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 1732
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ea7602eda5154b8e896662a83daa67a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10002
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 1732
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 763f5ec1250ad4a309f4adee1dd1ef6d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10003
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1416
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b431d11f670ab4778be49ec107135dfb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10004
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 1416
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6337afec7ed184c3b8b9e736f417e89d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10005
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 1416
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea9b7cec3641f42269ecdde10e1a0010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10006
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1100
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9db11fc065b81410a81b916c90c56023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10007
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 1100
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61d1a25a659804504834e6a8f873a988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10008
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 1100
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b793e06830e194df8bbb817a39cd039d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10009
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 784
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d12c8dec52e84aa79ce105571b5e3b0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10010
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 784
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1882bb852e0742c88b024b18d0a3821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack10011
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 784
+        width: 313
+        height: 316
+      alignment: 9
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3987d4a1b35ec487fbfeca7e09fdc961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

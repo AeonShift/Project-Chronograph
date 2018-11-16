@@ -8,7 +8,8 @@ public class TimeManager : MonoBehaviour {
     public float fastFactor = 2;
     public float customDeltaTime;
 
-
+    //make another time manager specifically for time zones and then make custom delta times insdie of each script and then change
+    //the customdeltatime in each script with the time zone
     private void Update()
     {
         customDeltaTime = Time.deltaTime * scalingFactor;
