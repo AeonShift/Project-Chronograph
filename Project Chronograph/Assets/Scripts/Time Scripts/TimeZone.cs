@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeZone : MonoBehaviour {
+public class TimeZone : MonoBehaviour
+{
 
     public TimeManager timeManager;
 
@@ -25,6 +26,7 @@ public class TimeZone : MonoBehaviour {
                 other.GetComponent<RaycastPlayerController>().UpdateScale(timeSpeed);
                 break;
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D other)

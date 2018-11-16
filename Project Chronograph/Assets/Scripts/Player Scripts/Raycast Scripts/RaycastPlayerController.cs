@@ -53,6 +53,11 @@ public class RaycastPlayerController : MonoBehaviour {
     private Vector2 velocity;
 
     public bool canMove = true;
+    public bool isSlowUsed = false;
+    public bool isSpeedUsed = false;
+    public bool isFreezeUsed = false;
+
+
 
     //our raycasts for movement
     private RaycastMoveDirection moveDown;
@@ -155,6 +160,7 @@ public class RaycastPlayerController : MonoBehaviour {
             isSlowUsed = true;
             isFastUsed = false;
             isFreezeUsed = false;
+          
             timeManager.UndoTime();
             //presses += 1;
             StartCoroutine(Slow());
@@ -162,9 +168,11 @@ public class RaycastPlayerController : MonoBehaviour {
 
         if (Input.GetButtonDown("SpeedButton") && presses == 0)
         {
+
             isSlowUsed = false;
             isFastUsed = true;
             isFreezeUsed = false;
+
             timeManager.UndoTime();
             //presses += 1;
             StartCoroutine(Speed());
@@ -172,9 +180,11 @@ public class RaycastPlayerController : MonoBehaviour {
 
         if (Input.GetButtonDown("FreezeButton") && presses == 0)
         {
+
             isSlowUsed = false;
             isFastUsed = false;
             isFreezeUsed = true;
+
             timeManager.UndoTime();
             //presses += 1;
             StartCoroutine(Freeze());
@@ -188,6 +198,9 @@ public class RaycastPlayerController : MonoBehaviour {
     and another coroutine is started, while loop of the last time function is stopped */
     IEnumerator Slow()
     {
+        isSlowUsed = true;
+        isSpeedUsed = false;
+        isFreezeUsed = false;
         yield return null;
         isSlowUsed = true;
         isFastUsed = false;
@@ -205,6 +218,9 @@ public class RaycastPlayerController : MonoBehaviour {
 
         }
         timeManager.UndoTime();
+        isSlowUsed = false;
+        isSpeedUsed = false;
+        isFreezeUsed = false;
         presses = 0;
 
 
@@ -227,6 +243,9 @@ public class RaycastPlayerController : MonoBehaviour {
             yield return null;
         }
         timeManager.UndoTime();
+        isSlowUsed = false;
+        isSpeedUsed = false;
+        isFreezeUsed = false;
         presses = 0;
 
 
@@ -251,6 +270,9 @@ public class RaycastPlayerController : MonoBehaviour {
 
         }
         timeManager.UndoTime();
+        isSlowUsed = false;
+        isSpeedUsed = false;
+        isFreezeUsed = false;
         presses = 0;
 
 

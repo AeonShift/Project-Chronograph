@@ -41,6 +41,7 @@ public class EnemyGroundMovement : MonoBehaviour {
         }
         else
         {
+
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed * timeManager.scalingFactor * timeScalingFactor, GetComponent<Rigidbody2D>().velocity.y);
             
