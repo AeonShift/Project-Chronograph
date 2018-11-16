@@ -13,6 +13,8 @@ public class FollowMovement : MonoBehaviour {
     public bool followOnLookAway;
     private SpriteRenderer spriteRenderer;
 
+    private float timeScalingFactor = 1.0f;
+
     // Use this for initialization
     void Start () {
         thePlayer = FindObjectOfType<RaycastPlayerController>();
@@ -28,7 +30,7 @@ public class FollowMovement : MonoBehaviour {
         {
             if (playerInRange)
             {
-                transform.position = Vector3.MoveTowards(transform.position, thePlayer.transform.position, moveSpeed * timeManager.customDeltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, thePlayer.transform.position, moveSpeed * timeManager.customDeltaTime * timeScalingFactor);
                 return;
             }
         }
@@ -42,5 +44,9 @@ public class FollowMovement : MonoBehaviour {
             facingAway = true;
             spriteRenderer.flipX = true;
         }
+    }
+    public void UpdateScale(float scale)
+    {
+        timeScalingFactor = scale;
     }
 }

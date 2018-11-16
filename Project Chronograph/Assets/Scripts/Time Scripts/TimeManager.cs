@@ -14,12 +14,9 @@ public class TimeManager : MonoBehaviour {
     public float speedTimeZoneDeltaTime;
     public float timeZoneScalingFactor;
 
-    RaycastPlayerController player;
+    //make another time manager specifically for time zones and then make custom delta times insdie of each script and then change
+    //the customdeltatime in each script with the time zone
 
-    /*Okay, idea time: Get the time functions in the playercontroller to return true while they're active, and if they're true
-    while a timezone scaling is true, then use Time.DeltaTime! or Time.customDeltaTime depending on what is being used. Use
-    customDeltaTime when freezing, but for fast and slow, they cancel, so just use Time.deltaTime*/
-    //BIG QUESTION. IF TWO GAME OBJECTS ARE USING THE SAME SCRIPT, CAN YOU CHANGE A VARIABLE IN ONE OF THEM AND KEEP IT THE SAME IN THE OTHER ONE????
     private void Update()
     {
         customDeltaTime = Time.deltaTime * scalingFactor;

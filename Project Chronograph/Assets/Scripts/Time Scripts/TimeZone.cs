@@ -9,24 +9,42 @@ public class TimeZone : MonoBehaviour
 
     public float timeSpeed;
 
-
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        switch (other.tag)
         {
-            //timeManager.SlowZoneEffect(timeSpeed);
+            case "MovingPlatform":
+                other.GetComponentInParent<PlatformMovement>().UpdateScale(timeSpeed);
+                break;
+            case "AirEnemy":
+                other.GetComponent<FollowMovement>().UpdateScale(timeSpeed);
+                break;
+            case "GroundEnemy":
+                other.GetComponent<EnemyGroundMovement>().UpdateScale(timeSpeed);
+                break;
+            case "Player":
+                other.GetComponent<RaycastPlayerController>().UpdateScale(timeSpeed);
+                break;
         }
 
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        switch (other.tag)
         {
-            if (other.tag == "Player")
-            {
-                timeManager.UndoTime();
-            }
-
-
+            case "MovingPlatform":
+                other.gameObject.GetComponentInParent<PlatformMovement>().UpdateScale(1.0f);
+                break;
+            case "AirEnemy":
+                other.GetComponent<FollowMovement>().UpdateScale(1.0f);
+                break;
+            case "GroundEnemy":
+                other.GetComponent<EnemyGroundMovement>().UpdateScale(1.0f);
+                break;
+            case "Player":
+                other.GetComponent<RaycastPlayerController>().UpdateScale(1.0f);
+                break;
         }
-
     }
+}

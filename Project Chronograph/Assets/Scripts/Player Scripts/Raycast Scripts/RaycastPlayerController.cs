@@ -91,12 +91,13 @@ public class RaycastPlayerController : MonoBehaviour {
     //for Knockback
     private Rigidbody2D rb2d;
 
+    private float timeScalingFactor = 1.0f;
+
+    public bool isSlowUsed = false;
+    public bool isFastUsed = false;
+    public bool isFreezeUsed = false;
+
    
-
-
-
-
-
 
     void Start () {
 
@@ -140,7 +141,7 @@ public class RaycastPlayerController : MonoBehaviour {
 
     private void Update()
     {
-
+        
         animator.SetBool("isGrounded", groundDown.DoRaycast(transform.position));
         animator.SetFloat("fallSpeed", velocity.y);
         if (canMove) { 
@@ -151,11 +152,15 @@ public class RaycastPlayerController : MonoBehaviour {
         {
             jumpStartTimer = jumpInputLeewayPeriod;
         }
+
         jumpInputDown = jumpBtn;
 
         if (Input.GetButtonDown("SlowButton") && presses == 0)
         {
             isSlowUsed = true;
+            isFastUsed = false;
+            isFreezeUsed = false;
+          
             timeManager.UndoTime();
             //presses += 1;
             StartCoroutine(Slow());
@@ -163,7 +168,11 @@ public class RaycastPlayerController : MonoBehaviour {
 
         if (Input.GetButtonDown("SpeedButton") && presses == 0)
         {
-            isSpeedUsed = true;
+
+            isSlowUsed = false;
+            isFastUsed = true;
+            isFreezeUsed = false;
+
             timeManager.UndoTime();
             //presses += 1;
             StartCoroutine(Speed());
@@ -171,11 +180,14 @@ public class RaycastPlayerController : MonoBehaviour {
 
         if (Input.GetButtonDown("FreezeButton") && presses == 0)
         {
+
+            isSlowUsed = false;
+            isFastUsed = false;
             isFreezeUsed = true;
+
             timeManager.UndoTime();
             //presses += 1;
             StartCoroutine(Freeze());
-
         }
     }
     }
@@ -190,6 +202,9 @@ public class RaycastPlayerController : MonoBehaviour {
         isSpeedUsed = false;
         isFreezeUsed = false;
         yield return null;
+        isSlowUsed = true;
+        isFastUsed = false;
+        isFreezeUsed = false;
         float timePassed = 0;
 
         while (timePassed < 3 && !TimePressed())
@@ -213,10 +228,10 @@ public class RaycastPlayerController : MonoBehaviour {
 
     IEnumerator Speed()
     {
-        isSlowUsed = false;
-        isSpeedUsed = true;
-        isFreezeUsed = false;
         yield return null;
+        isSlowUsed = false;
+        isFastUsed = true;
+        isFreezeUsed = false;
         float timePassed = 0;
 
         while (timePassed < 3 && !TimePressed())
@@ -238,10 +253,10 @@ public class RaycastPlayerController : MonoBehaviour {
 
     IEnumerator Freeze()
     {
-        isSlowUsed = false;
-        isSpeedUsed = false;
-        isFreezeUsed = true;
         yield return null;
+        isSlowUsed = false;
+        isFastUsed = false;
+        isFreezeUsed = true;
         float timePassed = 0;
 
         while (timePassed < 3 && !TimePressed())
@@ -264,6 +279,9 @@ public class RaycastPlayerController : MonoBehaviour {
     }
     IEnumerator Cancel()
     {
+        isSlowUsed = false;
+        isFastUsed = false;
+        isFreezeUsed = false;
         yield return null;
         timeManager.UndoTime();
         presses = 0;
@@ -335,7 +353,6 @@ public class RaycastPlayerController : MonoBehaviour {
         rb2d.bodyType = RigidbodyType2D.Kinematic;
         canMove = true;
 
-
     }
 
 
@@ -351,16 +368,16 @@ public class RaycastPlayerController : MonoBehaviour {
                     jumpStartTimer = 0;
                     jumpState = JumpState.Holding;
                     jumpHoldTimer = 0;
-                    velocity.y = jumpStartSpeed;
+                    velocity.y = jumpStartSpeed * timeScalingFactor;
                 }
                 break;
             case JumpState.Holding:
-                jumpHoldTimer += Time.deltaTime;
+                jumpHoldTimer += Time.deltaTime * timeScalingFactor * timeScalingFactor;
                 if (jumpInputDown == false || jumpHoldTimer >= jumpMaxHoldPeriod)
                 {
                     jumpState = JumpState.None;
                     //The Lerp function serves to basically always make sure that the player is moving at a minimum speed in the air
-                    velocity.y = Mathf.Lerp(jumpMinSpeed, jumpStartSpeed, jumpHoldTimer / jumpMaxHoldPeriod);
+                    velocity.y = Mathf.Lerp(jumpMinSpeed, jumpStartSpeed * timeScalingFactor, jumpHoldTimer / jumpMaxHoldPeriod);
                 }
                 break;
         }
@@ -369,6 +386,7 @@ public class RaycastPlayerController : MonoBehaviour {
         /*for horizontal movement, the player will ramp up in speed until they hit max
         speed, then they will only move at max speed*/
         float horizInput = Input.GetAxisRaw("Horizontal");
+
         if (canMove)
         {
              horizInput = Input.GetAxisRaw("Horizontal");
@@ -389,18 +407,18 @@ public class RaycastPlayerController : MonoBehaviour {
                 }
                 else
                 {
-                    velocity.x = Mathf.MoveTowards(velocity.x, horizMaxSpeed * wantedDirection, horizAccel * Time.deltaTime);
+                    velocity.x = Mathf.MoveTowards(velocity.x, horizMaxSpeed * timeScalingFactor * wantedDirection, horizAccel * Time.deltaTime * timeScalingFactor);
                 }
             }
             else
             {
-                velocity.x = Mathf.MoveTowards(velocity.x, 0, horizDeccel * Time.deltaTime);
+                velocity.x = Mathf.MoveTowards(velocity.x, 0, horizDeccel * Time.deltaTime * timeScalingFactor);
             }
 
             if (jumpState == JumpState.None)
             {
                 //gravity is always pulling down on the player
-                velocity.y -= gravity * Time.deltaTime;
+            velocity.y -= gravity * (Time.deltaTime * timeScalingFactor);
             }
 
             Vector2 displacement = Vector2.zero;
@@ -462,7 +480,7 @@ public class RaycastPlayerController : MonoBehaviour {
                 Flip();
             }
 
-
+            //velocity.x *= timeScalingFactor;
             //this translate function is built into Unity, and it does just that-- moves our character around
             transform.Translate(displacement);
         
@@ -481,6 +499,11 @@ public class RaycastPlayerController : MonoBehaviour {
         Scaler.x *= -1;
         transform.localScale = Scaler;
 
+    }
+
+    public void UpdateScale(float scale)
+    {
+        timeScalingFactor = scale;
     }
 
     public void KnockbackFunc(float objectDir, float knockDur, float knockbackPwr)

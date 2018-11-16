@@ -7,6 +7,8 @@ TagManager:
   - MovingPlatform
   - Enemy
   - Zone
+  - GroundEnemy
+  - AirEnemy
   layers:
   - Default
   - TransparentFX
