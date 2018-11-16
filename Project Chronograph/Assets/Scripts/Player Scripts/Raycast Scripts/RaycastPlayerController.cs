@@ -86,7 +86,7 @@ public class RaycastPlayerController : MonoBehaviour {
     //for Knockback
     private Rigidbody2D rb2d;
 
-    public float timeScalingFactor = 1f;
+    private float timeScalingFactor = 1.0f;
 
     public bool isSlowUsed = false;
     public bool isFastUsed = false;
@@ -346,16 +346,16 @@ public class RaycastPlayerController : MonoBehaviour {
                     jumpStartTimer = 0;
                     jumpState = JumpState.Holding;
                     jumpHoldTimer = 0;
-                    velocity.y = jumpStartSpeed;
+                    velocity.y = jumpStartSpeed * timeScalingFactor;
                 }
                 break;
             case JumpState.Holding:
-                jumpHoldTimer += Time.deltaTime;
+                jumpHoldTimer += Time.deltaTime * timeScalingFactor * timeScalingFactor;
                 if (jumpInputDown == false || jumpHoldTimer >= jumpMaxHoldPeriod)
                 {
                     jumpState = JumpState.None;
                     //The Lerp function serves to basically always make sure that the player is moving at a minimum speed in the air
-                    velocity.y = Mathf.Lerp(jumpMinSpeed, jumpStartSpeed, jumpHoldTimer / jumpMaxHoldPeriod);
+                    velocity.y = Mathf.Lerp(jumpMinSpeed, jumpStartSpeed * timeScalingFactor, jumpHoldTimer / jumpMaxHoldPeriod);
                 }
                 break;
         }
@@ -385,12 +385,12 @@ public class RaycastPlayerController : MonoBehaviour {
                 }
                 else
                 {
-                    velocity.x = Mathf.MoveTowards(velocity.x, horizMaxSpeed * wantedDirection, horizAccel * Time.deltaTime);
+                    velocity.x = Mathf.MoveTowards(velocity.x, horizMaxSpeed * timeScalingFactor * wantedDirection, horizAccel * Time.deltaTime * timeScalingFactor);
                 }
             }
             else
             {
-                velocity.x = Mathf.MoveTowards(velocity.x, 0, horizDeccel * Time.deltaTime);
+                velocity.x = Mathf.MoveTowards(velocity.x, 0, horizDeccel * Time.deltaTime * timeScalingFactor);
             }
 
             if (jumpState == JumpState.None)
@@ -400,7 +400,7 @@ public class RaycastPlayerController : MonoBehaviour {
             }
 
             Vector2 displacement = Vector2.zero;
-            Vector2 wantedDispl = velocity * (Time.deltaTime * timeScalingFactor);
+            Vector2 wantedDispl = velocity * Time.deltaTime;
 
             if (standingOn != null)
             {
@@ -479,11 +479,7 @@ public class RaycastPlayerController : MonoBehaviour {
 
     }
 
-    public void SlowUpdateScale(float scale){
-        timeScalingFactor = scale;
-    }
-
-    public void NormalUpdateScale(float scale)
+    public void UpdateScale(float scale)
     {
         timeScalingFactor = scale;
     }

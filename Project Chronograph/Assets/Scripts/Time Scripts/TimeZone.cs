@@ -7,41 +7,42 @@ public class TimeZone : MonoBehaviour {
     public TimeManager timeManager;
 
     public float timeSpeed;
-    public bool isAffected = false;
-
-    private List<GameObject> affectedObjects = new List<GameObject>();
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "MovingPlatform" || other.tag == "AirEnemy" || other.tag == "GroundEnemy"|| other.tag == "Player")
+        switch (other.tag)
         {
-            Debug.Log("affected");
-            affectedObjects.Add(other.gameObject);
-            isAffected = true;
+            case "MovingPlatform":
+                other.GetComponentInParent<PlatformMovement>().UpdateScale(timeSpeed);
+                break;
+            case "AirEnemy":
+                other.GetComponent<FollowMovement>().UpdateScale(timeSpeed);
+                break;
+            case "GroundEnemy":
+                other.GetComponent<EnemyGroundMovement>().UpdateScale(timeSpeed);
+                break;
+            case "Player":
+                other.GetComponent<RaycastPlayerController>().UpdateScale(timeSpeed);
+                break;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(other.tag == "MovingPlatform" || other.tag == "Enemy" || other.tag == "Player")
+        switch (other.tag)
         {
-            Debug.Log("Defected");
-            affectedObjects.Remove(affectedObjects.Find(x => x.name.Equals(other.name)));
-            isAffected = false;
+            case "MovingPlatform":
+                other.gameObject.GetComponentInParent<PlatformMovement>().UpdateScale(1.0f);
+                break;
+            case "AirEnemy":
+                other.GetComponent<FollowMovement>().UpdateScale(1.0f);
+                break;
+            case "GroundEnemy":
+                other.GetComponent<EnemyGroundMovement>().UpdateScale(1.0f);
+                break;
+            case "Player":
+                other.GetComponent<RaycastPlayerController>().UpdateScale(1.0f);
+                break;
         }
-    }
-
-    private void Update()
-    {
-        for(int i = 0; i < affectedObjects.Count; i++)
-        {
-            if(affectedObjects[i].tag == "Player"){
-                affectedObjects[i].GetComponent<RaycastPlayerController>().SlowUpdateScale(.35f);
-            }
-            else if(affectedObjects[i].tag == "Enemy"){
-                affectedObjects[i].GetComponent<EnemyGroundMovement>().SlowUpdateScale(.35f);
-            }
-            //affectedObjects[i].GetComponent<RaycastPlayerController>().velocity *= timeSpeed;
-        } 
     }
 }
