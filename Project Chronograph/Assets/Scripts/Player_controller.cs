@@ -9,15 +9,25 @@ public class Player_controller : MonoBehaviour {
     //these two variables give a more intuitive way to assing gravity and jump velocity rather than changing them directly
     public float jumpHeight = 4;
     public float timeToJumpApex = 0.4f;
+    public float accelerationTimeAirborne = .2f;
+    public float accelerationTimeGrounded = .1f;
+
     public float moveSpeed = 6;
-    public float gravity;
-    public float jumpVelocity;
+    float gravity;
+    float jumpVelocity;
     Vector3 velocity;
+    float velocityXSmoothing;
+
+
     Movement2D Movement;
 
 	// Use this for initialization
 	void Start () {
         Movement = GetComponent<Movement2D>();
+        //just some physics to set the gravity and jump velocity
+        gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        print("Gravity: " + gravity + " Jump Velocity: " + jumpVelocity);
 	}
 	
 	// Update is called once per frame
@@ -32,10 +42,10 @@ public class Player_controller : MonoBehaviour {
 
         if (Input.GetButton("Jump") && Movement.collisions.below) {
             velocity.y = jumpVelocity;
-
         }
 
-        velocity.x = input.x * moveSpeed;
+        float targetVelocityx = input.x * moveSpeed;
+        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityx, ref velocityXSmoothing, Movement.collisions.below ? accelerationTimeGrounded:accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
         Movement.Move(velocity * Time.deltaTime);
     }
