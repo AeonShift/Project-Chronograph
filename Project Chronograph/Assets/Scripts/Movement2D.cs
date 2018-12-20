@@ -29,6 +29,11 @@ public class Movement2D : MonoBehaviour {
     public RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
+    List<PassengerMovement> passengerMovementList;
+    //Dictionary is like a Hashset but you can access specific values
+    Dictionary<Transform, Movement2D> passengerDictionary = new Dictionary<Transform, Movement2D>();
+    
+
     public void Start () {
         collider = GetComponent<Collider2D>();
         CalculateRaySpacing(); //the only time you need to use this function again is if you change the amount of rays mid game
@@ -36,7 +41,7 @@ public class Movement2D : MonoBehaviour {
 
    
     //if we want the player to move slower in a time zone, we could just create another function called SlowMove where it's basically the same, but the variables are just changed so that the player does everything they normally do slower
-    public void Move(Vector3 velocity) {
+    public void MovePlayer(Vector3 velocity, bool standingOnPlatform = false) {
         UpdateRaycastOrigins();
         collisions.Reset();
         collisions.velocityOld = velocity;
@@ -52,24 +57,76 @@ public class Movement2D : MonoBehaviour {
             VerticalCollisions(ref velocity);
         }
 
-        
+        if (standingOnPlatform == true) {
+            collisions.below = true;
+        }
+
         transform.Translate(velocity);
     }
 
     //Everything having to do with moving platforms and things on platforms
-    public void MovePlatform(Vector3 move) {
-        Vector3 velocity = move * Time.deltaTime;
+    public void MovePlatform(Vector3 velocity) { 
         transform.Translate(velocity);
 
     }
 
-    public void MovePassengers(Vector3 move)
+    //passing refs through these so that we can change the indexes and waypoints from this script
+    public Vector3 CalculatePlatformMovement(float speed, ref int fromWaypointIndex, ref float percentBetweenWaypoints, ref Vector3[] globalWaypoints, bool cyclic, ref float nextMoveTime, float waitTime) {
+
+        //if the current time is less than the future moveTime, don't move
+        if (Time.time < nextMoveTime)
+        {
+            return Vector3.zero;
+        }
+
+        //so that the indexes reset if they go out of bounds
+        fromWaypointIndex %= globalWaypoints.Length;
+        int toWaypointIndex = (fromWaypointIndex + 1) % globalWaypoints.Length;
+        float distanceBetweenWaypoints = Vector3.Distance(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex]);
+        percentBetweenWaypoints += Time.deltaTime * speed / distanceBetweenWaypoints;
+
+        //Lerp, or linear interpolation is a lot easier than it sounds, all it is is finding the line between two points so that you can find a point in between them
+        Vector3 newPos = Vector3.Lerp(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex], percentBetweenWaypoints);
+
+        if(percentBetweenWaypoints >= 1)
+        {
+            percentBetweenWaypoints = 0;
+            fromWaypointIndex++;
+            if (!cyclic)
+            {
+                if (fromWaypointIndex >= globalWaypoints.Length - 1)
+                {
+                    fromWaypointIndex = 0;
+                    System.Array.Reverse(globalWaypoints);
+                }
+            }
+            nextMoveTime = Time.time + waitTime;
+        }
+
+        return newPos - transform.position;
+
+    }
+
+    public void MovePassengers(bool beforeMovePlatformInput) {
+        foreach (PassengerMovement entity in passengerMovementList) {
+            if (!passengerDictionary.ContainsKey(entity.transform)) {
+                passengerDictionary.Add(entity.transform, entity.transform.GetComponent<Movement2D>());
+            }
+            if (entity.moveBeforePlatform == beforeMovePlatformInput) {
+                passengerDictionary[entity.transform].MovePlayer(entity.velocity, entity.standingOnPlatform);
+            }
+        }
+    }
+
+    
+    public void CalculatePassengerMovement(Vector3 velocity)
     {
         //Hashsets are lists (not programming lists) that are fast at being added to and they are able to be checked through quickly
         //The items in a hashset are unordered and there can be no duplicates the items are all basically given a unique code so it's easy to check if an element exists or not
         HashSet<Transform> movedPassengers = new HashSet<Transform>();
+        passengerMovementList = new List<PassengerMovement>();
 
-        Vector3 velocity = move * Time.deltaTime; 
+        
         float directionX = Mathf.Sign(velocity.x);
         float directionY = Mathf.Sign(velocity.y);
 
@@ -85,7 +142,7 @@ public class Movement2D : MonoBehaviour {
 
                 //changing the ray origin to where you will be after moving on the x axis
                 rayOrigin += Vector2.right * (verticalRaySpacing * i);
-                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
+                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, passengerMask);
                 Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 
                 if (hit)
@@ -93,15 +150,84 @@ public class Movement2D : MonoBehaviour {
                     if (!movedPassengers.Contains(hit.transform))
                     {
                         movedPassengers.Add(hit.transform);
-                        float pushX = velocity.x - (hit.distance - skinWidth) * directionX;
+                        float pushX = velocity.x;
                         float pushY = velocity.y - (hit.distance - skinWidth) * directionY;
 
-                        hit.transform.Translate(new Vector3(pushX, pushY));
+                        //Setting the correct values for everything in the passengerMovementList
+                        passengerMovementList.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY == 1, true));
                     }
                 }
             }
 
         }
+
+        //Horizontally moving platform
+        if (velocity.x != 0)
+        {
+            float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+
+            for (int i = 0; i < horizontalRayCount; i++)
+            {
+                //if we're moving left we want raycasts left. ? means if it's true, set ray origins equal to raycastOrigins.bottomLeft : means if we're moving right then start at bottom right
+                Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
+
+                //changing the ray origin to where you will be after moving on the x axis
+                rayOrigin += Vector2.up * (horizontalRaySpacing * i);
+                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, passengerMask);
+
+                if (hit)
+                {
+
+                    if (hit.distance == 0) {
+                        //THIS WILL ALLOW THE PLAYER TO WALK THROUGH PLATFORMS THAT PUSH INTO HIM ON A WALL, CHANGE THIS CODE TO KILL THE PLAYER ONCE YOU'VE GOT THAT STUFF
+                        continue;
+                    }
+
+                    if (!movedPassengers.Contains(hit.transform))
+                    {
+                        movedPassengers.Add(hit.transform);
+                        float pushX = velocity.x - (hit.distance - skinWidth) * directionX;
+                        float pushY = -skinWidth;
+
+                        //Setting the correct values for everything in the passengerMovementList
+                        passengerMovementList.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), false, true));
+                    }
+                }
+            }
+        }
+
+        //Passenger ontop of horizontally or downward moving platform
+        if (directionY == -1 || velocity.y == 0 && velocity.x != 0)
+        {
+
+            //One skinwidth to get to the surface of the platform, then one more to go right above the surface
+            float rayLength = skinWidth * 2;
+
+            for (int i = 0; i < horizontalRayCount; i++)
+            {
+                //We always want to cast from the topleft so that we can catch everything on the platform and changing the ray origin to where you will be after moving on the x axis
+                Vector2 rayOrigin = raycastOrigins.topLeft + Vector2.right * (verticalRaySpacing * i);
+                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
+                                Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+
+
+                if (hit)
+                {
+                    if (!movedPassengers.Contains(hit.transform))
+                    {
+                        movedPassengers.Add(hit.transform);
+                        float pushX = velocity.x;
+                        float pushY = velocity.y;
+
+                        //Setting the correct values for everything in the passengerMovementList
+                        passengerMovementList.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), true, false));
+                    }
+                }
+
+            }
+        }
+
+
     }
 
     public void ClimbSlope(ref Vector3 velocity, float slopeAngle)
@@ -327,4 +453,23 @@ public class Movement2D : MonoBehaviour {
         }
     }
 
+    //This struct will store all the variables needed for moving passengers
+    public struct PassengerMovement
+    {
+        public Transform transform;
+        public Vector3 velocity;
+        public bool standingOnPlatform;
+        public bool moveBeforePlatform;
+        public PassengerMovement(Transform _transform, Vector3 _velocity, bool _standingOnPlatform, bool _moveBeforePlatform) {
+            transform = _transform;
+            velocity = _velocity;
+            standingOnPlatform = _standingOnPlatform;
+            moveBeforePlatform = _moveBeforePlatform;
+
+        }
+
+
+    }
+
+    
 }
