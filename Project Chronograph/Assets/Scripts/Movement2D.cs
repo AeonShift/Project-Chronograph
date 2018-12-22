@@ -46,13 +46,16 @@ public class Movement2D : MonoBehaviour {
         collisions.Reset();
         collisions.velocityOld = velocity;
 
+        if (velocity.x != 0) {
+            collisions.faceDir = (int)Mathf.Sign(velocity.x);
+        }
+
         if (velocity.y <= 0) {
             DescendSlope(ref velocity);
         }
 
-        if (velocity.x != 0) { 
         HorizontalCollisions(ref velocity);
-        }
+        
         if (velocity.y != 0){
             VerticalCollisions(ref velocity);
         }
@@ -64,6 +67,69 @@ public class Movement2D : MonoBehaviour {
         transform.Translate(velocity);
     }
 
+    public void JumpPlayer(ref Vector3 velocity, float maxjumpVelocity, float minJumpVelocity, bool wallSliding, int wallDirX, Vector2 wallJumpStrong, Vector2 wallJumpWeak, Vector2 input) {
+        if (wallSliding)
+        {
+            if (wallDirX == input.x)
+            {
+                velocity.x = -wallDirX * wallJumpStrong.x;
+                velocity.y = wallJumpStrong.y;
+            }
+            else if (input.x == 0)
+            {
+                velocity.x = -wallDirX * wallJumpWeak.x;
+                velocity.y = wallJumpWeak.x;
+            }
+            else
+            {
+                velocity.x = -wallDirX * wallJumpStrong.x;
+                velocity.y = wallJumpStrong.y;
+            }
+        }
+        
+        if (collisions.below)
+        {
+            velocity.y = maxjumpVelocity;
+        }
+    }
+
+    public void WallSliding(Vector2 input, ref Vector3 velocity, ref float velocityXSmoothing, float wallSlideSpeedMax, ref bool wallSliding, float wallStickTime, float timeToWallUnstick, int wallDirX) {
+        //if you're on a wall and moving down, then you can only move down as fast as the max wall slide speed
+        if (collisions.left || collisions.right && !collisions.below && velocity.y < 0)
+        {
+            wallSliding = true;
+
+            if (velocity.y < -wallSlideSpeedMax)
+            {
+                velocity.y = -wallSlideSpeedMax;
+            }
+
+            if (timeToWallUnstick > 0)
+            {
+                velocityXSmoothing = 0;
+                velocity.x = 0;
+
+                if (input.x != wallDirX && input.x != 0)
+                {
+                    timeToWallUnstick -= Time.deltaTime;
+                }
+                else
+                {
+                    timeToWallUnstick = wallStickTime;
+                }
+            }
+            else {
+                timeToWallUnstick = wallStickTime;
+            }
+        }
+
+        //if you're hitting something above you or below you, velocity will change to zero.
+        if (collisions.above || collisions.below)
+        {
+            velocity.y = 0;
+        }
+    }
+
     //Everything having to do with moving platforms and things on platforms
     public void MovePlatform(Vector3 velocity) { 
         transform.Translate(velocity);
@@ -71,7 +137,7 @@ public class Movement2D : MonoBehaviour {
     }
 
     //passing refs through these so that we can change the indexes and waypoints from this script
-    public Vector3 CalculatePlatformMovement(float speed, ref int fromWaypointIndex, ref float percentBetweenWaypoints, ref Vector3[] globalWaypoints, bool cyclic, ref float nextMoveTime, float waitTime) {
+    public Vector3 CalculatePlatformMovement(float speed, ref int fromWaypointIndex, ref float percentBetweenWaypoints, ref Vector3[] globalWaypoints, bool cyclic, ref float nextMoveTime, float waitTime, float easeAmount) {
 
         //if the current time is less than the future moveTime, don't move
         if (Time.time < nextMoveTime)
@@ -84,9 +150,11 @@ public class Movement2D : MonoBehaviour {
         int toWaypointIndex = (fromWaypointIndex + 1) % globalWaypoints.Length;
         float distanceBetweenWaypoints = Vector3.Distance(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex]);
         percentBetweenWaypoints += Time.deltaTime * speed / distanceBetweenWaypoints;
+        percentBetweenWaypoints = Mathf.Clamp01(percentBetweenWaypoints);
+        float easedPercentBetweenWaypoints = PlatformEasing(percentBetweenWaypoints, easeAmount);
 
         //Lerp, or linear interpolation is a lot easier than it sounds, all it is is finding the line between two points so that you can find a point in between them
-        Vector3 newPos = Vector3.Lerp(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex], percentBetweenWaypoints);
+        Vector3 newPos = Vector3.Lerp(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex], easedPercentBetweenWaypoints);
 
         if(percentBetweenWaypoints >= 1)
         {
@@ -230,6 +298,12 @@ public class Movement2D : MonoBehaviour {
 
     }
 
+    //this function uses an easing function which gives a value according to the percentage of completeness so we can make platforms go slow at the beginning, speed up, then slow at the end
+    public float PlatformEasing(float x,float easeAmount) {
+        float a = easeAmount + 1;
+        return Mathf.Pow(x, a) / (Mathf.Pow(x, a) + Mathf.Pow(1 - x, a));
+    }
+
     public void ClimbSlope(ref Vector3 velocity, float slopeAngle)
     {
         float moveDistance = Mathf.Abs(velocity.x);
@@ -276,8 +350,13 @@ public class Movement2D : MonoBehaviour {
     //the ref means that it will change the variable that gets passed through it rather than creating a copy and changing it
     public void HorizontalCollisions(ref Vector3 velocity) //if we want different climb angles for enemies or something, make more hori or vert collision functions for them specifically vid is episode 4
     {
-        float directionX = Mathf.Sign(velocity.x);
+        float directionX = collisions.faceDir;
         float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+
+        //so that a little ray will go out from whichever direction you were just moving to detect walls
+        if (Mathf.Abs(velocity.x) < skinWidth) {
+            rayLength = skinWidth * 2;
+        }
 
         for (int i = 0; i < horizontalRayCount; i++)
         {
@@ -357,6 +436,11 @@ public class Movement2D : MonoBehaviour {
             Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 
             if (hit) {
+                if (hit.collider.tag == "Through") {
+                    if (directionY == 1) {
+                        continue;
+                    }
+                }
                 //changing y velocity to how much we need to move to get to whatever the raycast hit
                 velocity.y = (hit.distance - skinWidth) * directionY;
                 //it changes the raylength so the ray will only hit what you're standing on if you're on a ledge or something
@@ -440,6 +524,7 @@ public class Movement2D : MonoBehaviour {
         public float slopeAngle;
         public float slopeAngleOld;
         public Vector3 velocityOld;
+        public int faceDir;
 
         public void Reset() {
             above = false;

@@ -10,6 +10,8 @@ public class MovingPlatform_controller : MonoBehaviour {
     public float speed;
     public bool cyclic;
     public float waitTime;
+    [Range(0, 2)]
+    public float easeAmount; //above 3, it's basically just stopping and starting so we're clamping it from 0 to 2
     int fromWaypointIndex = 0;
     float percentBetweenWaypoints;
     float nextMoveTime;
@@ -29,7 +31,7 @@ public class MovingPlatform_controller : MonoBehaviour {
 	void Update () {
         Movement.UpdateRaycastOrigins();
 
-        Vector3 velocity = Movement.CalculatePlatformMovement(speed, ref fromWaypointIndex, ref percentBetweenWaypoints, ref globalWaypoints, cyclic, ref nextMoveTime, waitTime);
+        Vector3 velocity = Movement.CalculatePlatformMovement(speed, ref fromWaypointIndex, ref percentBetweenWaypoints, ref globalWaypoints, cyclic, ref nextMoveTime, waitTime, easeAmount);
         Movement.CalculatePassengerMovement(velocity);
         Movement.MovePassengers(true);
         Movement.MovePlatform(velocity);
