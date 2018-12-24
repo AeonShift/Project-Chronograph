@@ -50,9 +50,8 @@ public class Player_controller : MonoBehaviour {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (Movement.collisions.left) ? -1 : 1;
 
-        float targetVelocityx = input.x * moveSpeed;
-        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityx, ref velocityXSmoothing, Movement.collisions.below ? accelerationTimeGrounded : accelerationTimeAirborne);
-
+        Movement.CalculatePlayerVelocity(ref velocity, input, moveSpeed, gravity, ref velocityXSmoothing, accelerationTimeGrounded, accelerationTimeAirborne);
+        
         bool wallSliding = false;
         Movement.WallSliding(input, ref velocity, ref velocityXSmoothing, wallSlideSpeedMax, ref wallSliding, wallStickTime, timeToWallUnstick, wallDirX);
 
@@ -64,15 +63,16 @@ public class Player_controller : MonoBehaviour {
         }
         if (Input.GetButtonUp("Jump"))
         {
-            if (velocity.y > minJumpVelocity)
-            {
-                velocity.y = minJumpVelocity;
-            }
+            Movement.JumpPlayerRelease(ref velocity, minJumpVelocity);
         }
 
 
 
-        velocity.y += gravity * Time.deltaTime;
-        Movement.MovePlayer(velocity * Time.deltaTime);
+        
+        Movement.MovePlayer(velocity * Time.deltaTime, input);
+
+        //MovePlayer is being called by both the player and the moving platforms, so we move this above and below collision to after the movement so that we have the correct values after we move the player with our own input
+        //if you're hitting something above you or below you, velocity will change to zero.
+        Movement.GravityCollisions(ref velocity);
     }
 }

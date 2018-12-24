@@ -9,6 +9,7 @@ TagManager:
   - Zone
   - GroundEnemy
   - AirEnemy
+  - MoveThrough
   layers:
   - Default
   - TransparentFX

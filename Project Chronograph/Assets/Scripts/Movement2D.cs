@@ -11,11 +11,13 @@ public class Movement2D : MonoBehaviour {
     public LayerMask passengerMask;
 
     const float skinWidth = .015f;
-    public int horizontalRayCount = 4;
-    public int verticalRayCount = 4;
+    const float dstBetweenRays = .25f;
+    [HideInInspector]
+    public int horizontalRayCount;
+    [HideInInspector]
+    public int verticalRayCount;
 
-    public float maxClimbAngle = 80;
-    public float maxDescendAngle = 75;
+    public float maxSlopeAngle = 80;
 
 
     //spacing between each ray
@@ -29,22 +31,37 @@ public class Movement2D : MonoBehaviour {
     public RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
+    [HideInInspector]
+    public Vector2 playerInput;
+
     List<PassengerMovement> passengerMovementList;
     //Dictionary is like a Hashset but you can access specific values
     Dictionary<Transform, Movement2D> passengerDictionary = new Dictionary<Transform, Movement2D>();
     
-
-    public void Start () {
+    //this goes before start functions, so the camera will be able to latch onto the player's colliders
+    public void Awake () {
         collider = GetComponent<Collider2D>();
         CalculateRaySpacing(); //the only time you need to use this function again is if you change the amount of rays mid game
     }
 
+
+    public void CalculatePlayerVelocity(ref Vector3 velocity, Vector2 input, float moveSpeed, float gravity, ref float velocityXSmoothing, float accelerationTimeGrounded, float accelerationTimeAirborne) {
+        float targetVelocityx = input.x * moveSpeed;
+        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityx, ref velocityXSmoothing, collisions.below ? accelerationTimeGrounded : accelerationTimeAirborne);
+        velocity.y += gravity * Time.deltaTime;
+    }
+
+    //overload function so that all the code with platform movment doesn't have to input anything
+    public void MovePlayer(Vector3 velocity, bool standingOnPlatform) {
+        MovePlayer(velocity, Vector2.zero, standingOnPlatform);
+    }
    
     //if we want the player to move slower in a time zone, we could just create another function called SlowMove where it's basically the same, but the variables are just changed so that the player does everything they normally do slower
-    public void MovePlayer(Vector3 velocity, bool standingOnPlatform = false) {
+    public void MovePlayer(Vector3 velocity, Vector2 input, bool standingOnPlatform = false) {
         UpdateRaycastOrigins();
         collisions.Reset();
         collisions.velocityOld = velocity;
+        playerInput = input;
 
         if (velocity.x != 0) {
             collisions.faceDir = (int)Mathf.Sign(velocity.x);
@@ -64,7 +81,9 @@ public class Movement2D : MonoBehaviour {
             collisions.below = true;
         }
 
+   
         transform.Translate(velocity);
+
     }
 
     public void JumpPlayer(ref Vector3 velocity, float maxjumpVelocity, float minJumpVelocity, bool wallSliding, int wallDirX, Vector2 wallJumpStrong, Vector2 wallJumpWeak, Vector2 input) {
@@ -90,6 +109,20 @@ public class Movement2D : MonoBehaviour {
         if (collisions.below)
         {
             velocity.y = maxjumpVelocity;
+        }
+    }
+
+    public void JumpPlayerRelease(ref Vector3 velocity, float minJumpVelocity) {
+        if (velocity.y > minJumpVelocity)
+        {
+            velocity.y = minJumpVelocity;
+        }
+    }
+
+    public void GravityCollisions(ref Vector3 velocity) {
+        if (collisions.above || collisions.below)
+        {
+            velocity.y = 0;
         }
     }
 
@@ -123,11 +156,7 @@ public class Movement2D : MonoBehaviour {
             }
         }
 
-        //if you're hitting something above you or below you, velocity will change to zero.
-        if (collisions.above || collisions.below)
-        {
-            velocity.y = 0;
-        }
+        
     }
 
     //Everything having to do with moving platforms and things on platforms
@@ -213,7 +242,7 @@ public class Movement2D : MonoBehaviour {
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, passengerMask);
                 Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 
-                if (hit)
+                if (hit && hit.distance != 0)
                 {
                     if (!movedPassengers.Contains(hit.transform))
                     {
@@ -243,7 +272,7 @@ public class Movement2D : MonoBehaviour {
                 rayOrigin += Vector2.up * (horizontalRaySpacing * i);
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, passengerMask);
 
-                if (hit)
+                if (hit && hit.distance != 0)
                 {
 
                     if (hit.distance == 0) {
@@ -279,7 +308,7 @@ public class Movement2D : MonoBehaviour {
                                 Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 
 
-                if (hit)
+                if (hit && hit.distance != 0)
                 {
                     if (!movedPassengers.Contains(hit.transform))
                     {
@@ -302,6 +331,10 @@ public class Movement2D : MonoBehaviour {
     public float PlatformEasing(float x,float easeAmount) {
         float a = easeAmount + 1;
         return Mathf.Pow(x, a) / (Mathf.Pow(x, a) + Mathf.Pow(1 - x, a));
+    }
+
+    void ResetFallingThroughPlatform() {
+        collisions.fallingThroughPlatform = false;
     }
 
     public void ClimbSlope(ref Vector3 velocity, float slopeAngle)
@@ -330,7 +363,7 @@ public class Movement2D : MonoBehaviour {
 
         if (hit) {
             float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
-            if (slopeAngle != 0 && slopeAngle <= maxDescendAngle) {
+            if (slopeAngle != 0 && slopeAngle <= maxSlopeAngle) {
                 if (Mathf.Sign(hit.normal.x) == directionX) {
                     if (hit.distance - skinWidth <= Mathf.Tan(slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x)) {
                         float moveDistance = Mathf.Abs(velocity.x);
@@ -351,6 +384,7 @@ public class Movement2D : MonoBehaviour {
     public void HorizontalCollisions(ref Vector3 velocity) //if we want different climb angles for enemies or something, make more hori or vert collision functions for them specifically vid is episode 4
     {
         float directionX = collisions.faceDir;
+        float directionY = Mathf.Sign(velocity.y);
         float rayLength = Mathf.Abs(velocity.x) + skinWidth;
 
         //so that a little ray will go out from whichever direction you were just moving to detect walls
@@ -372,12 +406,23 @@ public class Movement2D : MonoBehaviour {
 
             if (hit)
             {
-
+                //so that the horizontal rays don't interfere with you falling through the platform
+                if (hit.collider.tag == "MoveThrough")
+                {
+                    if (directionY == 1 || hit.distance == 0)
+                    {
+                        continue;
+                    }
+                    if (playerInput.y == -1 || hit.distance == 0)
+                    {
+                        continue;
+                    }
+                }
                 //getting the angle of the slope by getting the angle between the normal angle of the slope and the global up.
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
                 //i==0 meaning if the first ray hits the slope
-                if (i == 0 && slopeAngle <= maxClimbAngle)
+                if (i == 0 && slopeAngle <= maxSlopeAngle)
                 {
                     if (collisions.descendingSlope) {
                         collisions.descendingSlope = false;
@@ -397,7 +442,7 @@ public class Movement2D : MonoBehaviour {
                 }
 
 
-                if (!collisions.climbingSlope || slopeAngle > maxClimbAngle) { 
+                if (!collisions.climbingSlope || slopeAngle > maxSlopeAngle) { 
                 //changing x velocity to how much we need to move to get to whatever the raycast hit
                 velocity.x = (hit.distance - skinWidth) * directionX;
                 //it changes the raylength so the ray will only hit what you're standing on if you're on a ledge or something
@@ -436,8 +481,18 @@ public class Movement2D : MonoBehaviour {
             Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 
             if (hit) {
-                if (hit.collider.tag == "Through") {
-                    if (directionY == 1) {
+                //if you hit a platform we've tagged as a movethrough one, then you can go through it
+                if (hit.collider.tag == "MoveThrough") {
+                    if (directionY == 1 || hit.distance == 0) {
+                        continue;
+                    }
+                    if (collisions.fallingThroughPlatform) {
+                        continue;
+                    }
+                    if (playerInput.y == -1 || hit.distance == 0) {
+                        collisions.fallingThroughPlatform = true;
+                        //after half a second, fallingthroughPlatform will be reset to false
+                        Invoke("ResetFallingThroughPlatform", 0.1f);
                         continue;
                     }
                 }
@@ -496,6 +551,12 @@ public class Movement2D : MonoBehaviour {
         //this isn't actually expanding it, it's making it smaller by multiplying the skin width by -2
         bounds.Expand(skinWidth * -2);
 
+        float boundsWidth = bounds.size.x;
+        float boundsHeight = bounds.size.y;
+
+        horizontalRayCount = Mathf.RoundToInt(boundsHeight / dstBetweenRays);
+        verticalRayCount = Mathf.RoundToInt(boundsWidth / dstBetweenRays);
+
         //making sure you're sending at least 2 horizontal and vertical rays
         horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue);
         verticalRayCount = Mathf.Clamp(verticalRayCount, 2, int.MaxValue);
@@ -525,6 +586,7 @@ public class Movement2D : MonoBehaviour {
         public float slopeAngleOld;
         public Vector3 velocityOld;
         public int faceDir;
+        public bool fallingThroughPlatform;
 
         public void Reset() {
             above = false;
