@@ -30,6 +30,7 @@ public class Movement2D : MonoBehaviour {
     public Collider2D collider;
     public RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
+    public PassengerMovement passengerCollisions;
 
     [HideInInspector]
     public Vector2 playerInput;
@@ -275,11 +276,6 @@ public class Movement2D : MonoBehaviour {
                 if (hit && hit.distance != 0)
                 {
 
-                    if (hit.distance == 0) {
-                        //THIS WILL ALLOW THE PLAYER TO WALK THROUGH PLATFORMS THAT PUSH INTO HIM ON A WALL, CHANGE THIS CODE TO KILL THE PLAYER ONCE YOU'VE GOT THAT STUFF
-                        continue;
-                    }
-
                     if (!movedPassengers.Contains(hit.transform))
                     {
                         movedPassengers.Add(hit.transform);
@@ -287,7 +283,7 @@ public class Movement2D : MonoBehaviour {
                         float pushY = -skinWidth;
 
                         //Setting the correct values for everything in the passengerMovementList
-                        passengerMovementList.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), false, true));
+                        passengerMovementList.Add(new PassengerMovement(hit.transform, new Vector2(pushX, pushY), false, true));
                     }
                 }
             }
@@ -300,12 +296,12 @@ public class Movement2D : MonoBehaviour {
             //One skinwidth to get to the surface of the platform, then one more to go right above the surface
             float rayLength = skinWidth * 2;
 
-            for (int i = 0; i < horizontalRayCount; i++)
+            for (int i = 0; i < verticalRayCount; i++)
             {
                 //We always want to cast from the topleft so that we can catch everything on the platform and changing the ray origin to where you will be after moving on the x axis
                 Vector2 rayOrigin = raycastOrigins.topLeft + Vector2.right * (verticalRaySpacing * i);
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
-                                Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+                Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 
 
                 if (hit && hit.distance != 0)
@@ -356,6 +352,11 @@ public class Movement2D : MonoBehaviour {
     }
 
     public void DescendSlope(ref Vector3 velocity) {
+
+        RaycastHit2D maxSlopeHitLeft = Physics2D.Raycast(raycastOrigins.bottomLeft, Vector2.down, Mathf.Abs(velocity.y) + skinWidth, collisionMask);
+        RaycastHit2D maxSlopeHitRight = Physics2D.Raycast(raycastOrigins.bottomRight, Vector2.down, Mathf.Abs(velocity.y) + skinWidth, collisionMask);
+
+
         float directionX = Mathf.Sign(velocity.x);
         //if we are descending to the right, we want the downward raycasts to start on the left, and vice versa
         Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomRight : raycastOrigins.bottomLeft;
@@ -379,6 +380,7 @@ public class Movement2D : MonoBehaviour {
             }
         }
     }
+
 
     //the ref means that it will change the variable that gets passed through it rather than creating a copy and changing it
     public void HorizontalCollisions(ref Vector3 velocity) //if we want different climb angles for enemies or something, make more hori or vert collision functions for them specifically vid is episode 4

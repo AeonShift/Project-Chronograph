@@ -31,8 +31,11 @@ public class Player_controller : MonoBehaviour {
     Vector3 velocity;
     float velocityXSmoothing;
 
+    bool facingRight = true;
+
 
     Movement2D Movement;
+    public Animator animator;
 
 	// Use this for initialization
 	void Start () {
@@ -47,11 +50,23 @@ public class Player_controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        animator.SetBool("isGrounded", Movement.collisions.below || Movement.passengerCollisions.standingOnPlatform);
+        animator.SetFloat("fallSpeed", velocity.y * Time.deltaTime);
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (Movement.collisions.left) ? -1 : 1;
 
         Movement.CalculatePlayerVelocity(ref velocity, input, moveSpeed, gravity, ref velocityXSmoothing, accelerationTimeGrounded, accelerationTimeAirborne);
-        
+        animator.SetFloat("Speed", Mathf.Abs(velocity.x * Time.deltaTime));
+
+        if (facingRight == false && input.x > 0)
+        {
+            Flip();
+        }
+        else if (facingRight == true && input.x < 0)
+        {
+            Flip();
+        }
+
         bool wallSliding = false;
         Movement.WallSliding(input, ref velocity, ref velocityXSmoothing, wallSlideSpeedMax, ref wallSliding, wallStickTime, timeToWallUnstick, wallDirX);
 
@@ -74,5 +89,15 @@ public class Player_controller : MonoBehaviour {
         //MovePlayer is being called by both the player and the moving platforms, so we move this above and below collision to after the movement so that we have the correct values after we move the player with our own input
         //if you're hitting something above you or below you, velocity will change to zero.
         Movement.GravityCollisions(ref velocity);
+    }
+
+    void Flip()
+    {
+
+        facingRight = !facingRight;
+        Vector3 Scaler = transform.localScale;
+        Scaler.x *= -1;
+        transform.localScale = Scaler;
+
     }
 }

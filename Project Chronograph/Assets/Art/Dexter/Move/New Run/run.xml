@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="run.png">
+	<!-- Created with Adobe Animate version 18.0.2.126 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="run0000" x="0" y="0" width="260" height="262"/>
+	<SubTexture name="run0001" x="260" y="0" width="260" height="262"/>
+	<SubTexture name="run0002" x="520" y="0" width="260" height="262"/>
+	<SubTexture name="run0003" x="0" y="262" width="260" height="262"/>
+	<SubTexture name="run0004" x="260" y="262" width="260" height="262"/>
+	<SubTexture name="run0005" x="520" y="262" width="260" height="262"/>
+	<SubTexture name="run0006" x="0" y="524" width="260" height="262"/>
+	<SubTexture name="run0007" x="260" y="524" width="260" height="262"/>
+	<SubTexture name="run0008" x="520" y="524" width="260" height="262"/>
+	<SubTexture name="run0009" x="0" y="786" width="260" height="262"/>
+	<SubTexture name="run0010" x="260" y="786" width="260" height="262"/>
+	<SubTexture name="run0011" x="520" y="786" width="260" height="262"/>
+</TextureAtlas>

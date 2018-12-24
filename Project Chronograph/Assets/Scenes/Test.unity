@@ -951,7 +951,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 503331330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1028458, y: 4.510439, z: 0}
+  m_LocalPosition: {x: 6.41, y: 5.69, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1059,7 +1059,7 @@ MonoBehaviour:
   target: {fileID: 1819066647}
   focusAreaSize: {x: 3, y: 5}
   verticalOffset: 1
-  lookAheadDstX: 4
+  lookAheadDstX: 2.5
   lookSmoothTimeX: 0.5
   verticalSmoothTime: 0.5
 --- !u!20 &519420031
@@ -3017,6 +3017,7 @@ MonoBehaviour:
   wallJumpStrong: {x: 25, y: 18}
   wallJumpWeak: {x: 15, y: 10}
   wallStickTime: 2.5
+  animator: {fileID: 1819066650}
 --- !u!114 &1819066647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3155,7 +3156,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1819066645}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.39, y: 0.71, z: -0.33}
+  m_LocalPosition: {x: -5.431, y: 0.929, z: -0.33}
   m_LocalScale: {x: 0.5325172, y: 0.5085835, z: 0.11473769}
   m_Children:
   - {fileID: 847426381}
@@ -3523,7 +3524,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1915197731}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.89, y: 3.31, z: 0}
+  m_LocalPosition: {x: -0.9, y: -0.4, z: 0}
   m_LocalScale: {x: 8.72, y: 2.2231, z: 0.473}
   m_Children: []
   m_Father: {fileID: 0}
