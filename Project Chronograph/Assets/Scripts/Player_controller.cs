@@ -17,6 +17,7 @@ public class Player_controller : MonoBehaviour {
     public float accelerationTimeGrounded = .1f;
 
     public float moveSpeed = 6;
+    public float maxMoveSpeed = 12;
 
     public float wallSlideSpeedMax = 3;
     public Vector2 wallJumpStrong = new Vector2(25,18);
@@ -54,8 +55,13 @@ public class Player_controller : MonoBehaviour {
         animator.SetFloat("fallSpeed", velocity.y * Time.deltaTime);
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (Movement.collisions.left) ? -1 : 1;
-
-        Movement.CalculatePlayerVelocity(ref velocity, input, moveSpeed, gravity, ref velocityXSmoothing, accelerationTimeGrounded, accelerationTimeAirborne);
+        if (Input.GetButton("RunButton"))
+        {
+            Movement.CalculatePlayerVelocity(ref velocity, input, maxMoveSpeed, gravity, ref velocityXSmoothing, accelerationTimeGrounded, accelerationTimeAirborne);
+        }
+        else{
+            Movement.CalculatePlayerVelocity(ref velocity, input, moveSpeed, gravity, ref velocityXSmoothing, accelerationTimeGrounded, accelerationTimeAirborne);
+        }
         animator.SetFloat("Speed", Mathf.Abs(velocity.x * Time.deltaTime));
 
         if (facingRight == false && input.x > 0)

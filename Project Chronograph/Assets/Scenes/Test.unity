@@ -3011,8 +3011,9 @@ MonoBehaviour:
   minJumpHeight: 1
   timeToJumpApex: 0.4
   accelerationTimeAirborne: 0.2
-  accelerationTimeGrounded: 0.1
+  accelerationTimeGrounded: 3
   moveSpeed: 6
+  maxMoveSpeed: 12
   wallSlideSpeedMax: 3
   wallJumpStrong: {x: 25, y: 18}
   wallJumpWeak: {x: 15, y: 10}
