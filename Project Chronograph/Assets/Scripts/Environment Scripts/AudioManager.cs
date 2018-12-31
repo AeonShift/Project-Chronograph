@@ -77,7 +77,7 @@ public class AudioManager : MonoBehaviour
             sounds[i].SetSource(_go.AddComponent<AudioSource>());
         }
 
-        PlaySound("Respawn");
+        PlaySound("Music");
     }
 
     public void PlaySound(string _name)
