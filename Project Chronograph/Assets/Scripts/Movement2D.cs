@@ -52,6 +52,12 @@ public class Movement2D : MonoBehaviour {
         velocity.y += gravity * Time.deltaTime;
     }
 
+    public void CalculateGroundEnemyVelocity(ref Vector3 velocity, float moveSpeed, float gravity, ref float velocityXSmoothing, float accelerationTimeGrounded) {
+        float targetVelocityx = moveSpeed;
+        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityx, ref velocityXSmoothing, accelerationTimeGrounded);
+        velocity.y += gravity * Time.deltaTime;
+    }
+
     //overload function so that all the code with platform movment doesn't have to input anything
     public void MovePlayer(Vector3 velocity, bool standingOnPlatform) {
         MovePlayer(velocity, Vector2.zero, standingOnPlatform);
@@ -88,7 +94,7 @@ public class Movement2D : MonoBehaviour {
     }
 
     public void JumpPlayer(ref Vector3 velocity, float maxjumpVelocity, float minJumpVelocity, bool wallSliding, int wallDirX, Vector2 wallJumpStrong, Vector2 wallJumpWeak, Vector2 input) {
-        if (wallSliding)
+        if (wallSliding && !collisions.below)
         {
             if (wallDirX == input.x)
             {
@@ -125,6 +131,39 @@ public class Movement2D : MonoBehaviour {
         {
             velocity.y = 0;
         }
+    }
+
+    public void MoveGroundEnemy(Vector3 velocity)
+    {
+        UpdateRaycastOrigins();
+        collisions.Reset();
+        collisions.velocityOld = velocity;
+
+        if (velocity.x != 0)
+        {
+            collisions.faceDir = (int)Mathf.Sign(velocity.x);
+        }
+
+        if (velocity.y <= 0)
+        {
+            DescendSlope(ref velocity);
+        }
+
+        HorizontalCollisions(ref velocity);
+
+        if (velocity.y != 0)
+        {
+            VerticalCollisions(ref velocity);
+        }
+
+        /*if (standingOnPlatform == true)
+        {
+            collisions.below = true;
+        }*/
+
+
+        transform.Translate(velocity);
+
     }
 
     public void WallSliding(Vector2 input, ref Vector3 velocity, ref float velocityXSmoothing, float wallSlideSpeedMax, ref bool wallSliding, float wallStickTime, float timeToWallUnstick, int wallDirX) {
